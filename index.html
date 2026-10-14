@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Estúdio Reels IA</title>
+<meta name="description" content="Você grava, a IA edita do seu jeito. Estúdio de edição de Reels por conversa.">
+<meta property="og:title" content="Estúdio Reels IA: você grava, a IA edita">
+<meta property="og:description" content="Corta silêncios, legenda palavra por palavra e aprende o seu estilo.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%3E%20%20%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%22112%22%20fill%3D%22%232340E8%22/%3E%20%20%20%3Cg%20transform%3D%22translate%2867%2C96%29%20scale%283.4%29%22%3E%20%20%20%20%20%3Crect%20x%3D%2220%22%20y%3D%2210%22%20width%3D%2248%22%20height%3D%2282%22%20rx%3D%2214%22%20fill%3D%22%23FFFFFF%22/%3E%20%20%20%20%20%3Cpath%20d%3D%22M37%2030.5c0-2.6%202.8-4.2%205-2.9l14.4%208.6c2.2%201.3%202.2%204.5%200%205.8L42%2050.6c-2.2%201.3-5-.3-5-2.9z%22%20fill%3D%22%232340E8%22/%3E%20%20%20%20%20%3Crect%20x%3D%2230%22%20y%3D%2262%22%20width%3D%2228%22%20height%3D%226.5%22%20rx%3D%223.25%22%20fill%3D%22%232340E8%22/%3E%20%20%20%20%20%3Crect%20x%3D%2235%22%20y%3D%2273%22%20width%3D%2218%22%20height%3D%226.5%22%20rx%3D%223.25%22%20fill%3D%22%232340E8%22%20opacity%3D%22.55%22/%3E%20%20%20%20%20%3Cpath%20d%3D%22M80%202c1%207.4%203.6%2010%2011%2011-7.4%201-10%203.6-11%2011-1-7.4-3.6-10-11-11%207.4-1%2010-3.6%2011-11z%22%20fill%3D%22%23FFFFFF%22/%3E%20%20%20%20%20%3C/g%3E%20%3C/svg%3E">
+<meta name="theme-color" content="#09090B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Página de venda do Estúdio Reels IA. Mesma identidade (escuro, azul, Geist).
+     Layout: hero dividido com uma janela de editor desenhada em CSS; seções alternam faixa larga e coluna. */
+  :root {
+    color-scheme: dark;
+    --bg: #09090B; --surface: #131316; --surface-2: #1B1B20; --line: #27272D;
+    --fg: #F4F4F5; --muted: #A1A1AA; --dim: #71717A;
+    --blue: #2340E8; --blue-2: #2B4BFF; --ok: #22C55E; --cut: #EF4444;
+    --f: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 var(--f); -webkit-font-smoothing: antialiased; }
+  .page { max-width: 1160px; margin: 0 auto; padding-inline: 20px; padding-block: 0 140px; display: flex; flex-direction: column; gap: 120px; }
+  h1, h2, h3 { margin: 0; letter-spacing: -0.035em; line-height: 1.04; text-wrap: balance; font-weight: 800; }
+  h1 { font-size: clamp(42px, 7vw, 80px); }
+  h2 { font-size: clamp(30px, 4.6vw, 52px); }
+  h3 { font-size: 20px; letter-spacing: -0.02em; line-height: 1.25; font-weight: 700; }
+  p { margin: 0; }
+  .sub { color: var(--muted); font-size: 19px; max-width: 56ch; }
+  .kicker { font: 500 13px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+  .kicker b { color: var(--blue-2); font-weight: 500; }
+  .mark { color: var(--blue-2); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 700 17px var(--f); text-decoration: none; padding: 15px 24px; border-radius: 12px; }
+  .btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .btn.primary { background: var(--blue); color: #fff; box-shadow: 0 12px 34px -12px rgba(35,64,232,.9); }
+  .btn.primary:hover { background: var(--blue-2); }
+  .btn.ghost { color: var(--fg); border: 1px solid var(--line); }
+  .btn.ghost:hover { background: var(--surface); }
+  section { display: flex; flex-direction: column; gap: 28px; }
+  .head { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
+
+  /* topo */
+  .top { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; border-bottom: 1px solid var(--line); }
+  .brand { font: 700 15px var(--f); display: flex; align-items: center; gap: 10px; }
+  .brand i { width: 22px; height: 22px; border-radius: 6px; background: var(--blue); display: grid; place-items: center; font-style: normal; font-size: 12px; }
+  .top a { color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: none; }
+  .top a:hover { color: var(--fg); }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 24px; }
+  .hero-txt { display: flex; flex-direction: column; gap: 22px; }
+  .ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+  .facts { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  .facts span { display: flex; align-items: center; gap: 8px; }
+  .facts span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+
+  /* janela do editor */
+  .app { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 50px 120px -40px rgba(35,64,232,.55); min-width: 0; }
+  .app-bar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--line); font: 500 12px var(--mono); color: var(--dim); }
+  .app-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-2); }
+  .app-bar span { margin-left: 8px; }
+  .app-main { display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 14px; padding: 14px; }
+  .chat { display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; line-height: 1.45; min-width: 0; }
+  .b { padding: 9px 12px; border-radius: 13px; max-width: 92%; }
+  .b.me { align-self: flex-end; background: var(--blue); color: #fff; border-bottom-right-radius: 4px; }
+  .b.ai { align-self: flex-start; background: var(--surface-2); border-bottom-left-radius: 4px; }
+  .b.ai code { font: 12px var(--mono); color: var(--ok); }
+  .preview { aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; position: relative; background: linear-gradient(170deg, #1d2a8f, #0b0d1c 70%); border: 1px solid var(--line); }
+  .preview::before { content: ""; position: absolute; left: 50%; top: 40%; width: 46%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(0,0,0,.35); box-shadow: 0 70px 0 26px rgba(0,0,0,.35); }
+  .cap { position: absolute; left: 6%; right: 6%; top: 64%; display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; font: 900 12px/1 var(--f); text-transform: uppercase; color: #fff; }
+  .cap span { padding: 2px 3px; border-radius: 3px; animation: say 2.4s infinite; }
+  .cap span:nth-child(2) { animation-delay: .8s; } .cap span:nth-child(3) { animation-delay: 1.6s; }
+  @keyframes say { 0%, 30% { background: var(--blue); } 33%, 100% { background: transparent; } }
+  .hook { position: absolute; left: 8%; right: 8%; top: 14%; text-align: center; font: 900 10px/1.2 var(--f); text-transform: uppercase; }
+  .hook b { background: var(--blue); padding: 2px 4px; border-radius: 3px; }
+  .tracks { border-top: 1px solid var(--line); padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; position: relative; }
+  .track { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; font: 500 11px var(--mono); color: var(--dim); }
+  .lane { height: 16px; display: flex; gap: 2px; }
+  .lane i { border-radius: 3px; background: #3B4FD9; }
+  .lane i.x { background: repeating-linear-gradient(45deg, var(--cut) 0 3px, transparent 3px 6px); opacity: .7; }
+  .lane.words i { background: var(--surface-2); border: 1px solid var(--line); }
+  .lane.fx i { background: transparent; }
+  .lane.fx i.on { background: var(--ok); opacity: .85; }
+  .head-line { position: absolute; top: 8px; bottom: 8px; left: calc(14px + 64px); width: 2px; background: #fff; border-radius: 2px; animation: play 6s linear infinite; }
+  @keyframes play { from { transform: translateX(0); } to { transform: translateX(calc(var(--w, 300px))); } }
+
+  /* bruto x editado */
+  .cutbox { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 26px 22px; display: flex; flex-direction: column; gap: 22px; }
+  .row { display: flex; flex-direction: column; gap: 8px; }
+  .row-h { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .row-h b { font: 600 14px var(--mono); color: var(--fg); font-variant-numeric: tabular-nums; }
+  .bar { height: 34px; display: flex; gap: 2px; border-radius: 8px; overflow: hidden; }
+  .bar i { background: #3B4FD9; }
+  .bar i.x { background: repeating-linear-gradient(45deg, rgba(239,68,68,.75) 0 4px, rgba(239,68,68,.25) 4px 8px); }
+  .bar.after i { background: var(--blue); }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+  .legend span { display: flex; align-items: center; gap: 7px; }
+  .legend span::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: #3B4FD9; }
+  .legend span.x::before { background: repeating-linear-gradient(45deg, rgba(239,68,68,.75) 0 3px, rgba(239,68,68,.25) 3px 6px); }
+  .cutlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .cutlist div { background: var(--surface-2); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; }
+  .cutlist b { font: 700 26px var(--f); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .cutlist span { font-size: 13px; color: var(--muted); }
+  .note { font-size: 13px; color: var(--dim); }
+
+  /* memória */
+  .memory { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: center; }
+  .memory ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+  .memory li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; }
+  .memory li em { font: 600 13px var(--mono); font-style: normal; color: var(--blue-2); border: 1px solid #2a3170; border-radius: 9px; height: 34px; display: grid; place-items: center; }
+  .memory li b { display: block; font-size: 18px; }
+  .memory li span { color: var(--muted); font-size: 16px; }
+  .file { background: #050506; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; min-width: 0; }
+  .file-h { padding: 10px 14px; border-bottom: 1px solid var(--line); font: 500 12px var(--mono); color: var(--dim); display: flex; justify-content: space-between; }
+  .file pre { margin: 0; padding: 16px; font: 13px/1.75 var(--mono); color: #D4D4D8; white-space: pre-wrap; word-break: break-word; }
+  .file .c { color: var(--dim); } .file .h { color: var(--fg); font-weight: 500; } .file .new { color: var(--ok); }
+
+  /* comandos */
+  .cmds { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .cmd { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .cmd code { font: 500 16px var(--mono); color: var(--fg); }
+  .cmd code::before { content: "/"; color: var(--blue-2); }
+  .cmd span { color: var(--muted); font-size: 15px; }
+  .stack { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); }
+  .stack b { font: 500 13px var(--mono); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; }
+
+  /* resultados */
+  .reel-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .reel { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .reel div { aspect-ratio: 9 / 16; border-radius: 14px; border: 1px solid var(--line); background: linear-gradient(165deg, var(--c1), var(--c2)); position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; padding: 12px; }
+  .reel div::before { content: ""; position: absolute; left: 50%; top: 38%; width: 44%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(0,0,0,.3); box-shadow: 0 90px 0 34px rgba(0,0,0,.3); }
+  .reel div span { position: relative; font: 600 11px var(--mono); color: rgba(255,255,255,.85); background: rgba(0,0,0,.45); padding: 3px 8px; border-radius: 99px; }
+  .reel figcaption { font-size: 14px; color: var(--muted); }
+  .reel figcaption b { color: var(--fg); }
+
+  /* pra quem */
+  .fit { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .fit > div { border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .fit .yes { background: linear-gradient(180deg, rgba(35,64,232,.12), transparent 60%); border-color: #2a3170; }
+  .fit ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .fit li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; font-size: 16px; }
+  .fit li::before { content: "✓"; color: var(--ok); font-weight: 700; }
+  .fit .no li::before { content: "×"; color: var(--dim); }
+  .fit .no li { color: var(--muted); }
+
+  /* oferta */
+  .price { position: relative; isolation: isolate; border: 1px solid #23263A; border-radius: 28px; background: #0E0F14; padding: 40px 22px 24px; display: flex; flex-direction: column; gap: 26px; overflow: hidden; text-align: center; align-items: center; }
+  .price::before { content: ""; position: absolute; inset: auto -20% -200px -20%; height: 460px; z-index: -1; background: radial-gradient(closest-side, rgba(35,64,232,.45), transparent); }
+  .price .sub { margin-inline: auto; }
+  .amount { display: flex; align-items: baseline; gap: 6px; justify-content: center; }
+  .amount small { font-size: 22px; font-weight: 700; color: var(--muted); }
+  .amount b { font-size: clamp(64px, 12vw, 96px); font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+  .inside { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1px; background: rgba(255,255,255,.07); border-radius: 16px; overflow: hidden; width: 100%; max-width: 760px; text-align: left; }
+  .inside div { background: #111219; padding: 16px 18px; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .inside em { font: 700 20px var(--f); font-style: normal; color: var(--blue-2); letter-spacing: -0.02em; }
+  .inside b { display: block; font-size: 16px; }
+  .inside span { font-size: 14px; color: var(--muted); }
+  .buy { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; max-width: 420px; }
+  .buy .btn { width: 100%; font-size: 18px; padding: 17px; }
+  .buy small { font-size: 14px; color: var(--muted); }
+  .guarantee { display: flex; gap: 14px; align-items: center; text-align: left; font-size: 14px; color: var(--muted); max-width: 520px; }
+  .guarantee i { flex: none; width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--ok); display: grid; place-items: center; font: 800 15px var(--f); font-style: normal; color: var(--ok); }
+  .guarantee b { color: var(--fg); }
+
+  /* dúvidas */
+  .qa { display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  .qa dl { margin: 0; display: flex; flex-direction: column; }
+  .qa dt { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; padding-top: 20px; border-top: 1px solid var(--line); }
+  .qa dt:first-child { border-top: 0; padding-top: 0; }
+  .qa dd { margin: 6px 0 20px; color: var(--muted); font-size: 16px; }
+
+  /* vídeos */
+  .hero-vid { position: relative; justify-self: center; width: min(340px, 78vw); }
+  .phone-frame { position: relative; border-radius: 40px; padding: 9px; background: #18181C; border: 1px solid var(--line); box-shadow: 0 50px 120px -30px rgba(35,64,232,.6); }
+  .phone-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 32px; background: #000; cursor: pointer; }
+  .vid-badge { position: absolute; left: -14px; bottom: 56px; display: inline-flex; align-items: center; gap: 8px; font: 700 13px var(--f); background: var(--fg); color: var(--bg); padding: 9px 14px; border-radius: 99px; box-shadow: 0 14px 30px rgba(0,0,0,.45); }
+  .vid-badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .snd { position: absolute; right: 18px; top: 18px; z-index: 2; font: 700 12px var(--f); color: #fff; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.2); border-radius: 99px; padding: 6px 11px 6px 28px; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .snd::before { content: ""; position: absolute; left: 10px; top: 50%; width: 12px; height: 12px; transform: translateY(-50%); background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 9h4l5-4v14l-5-4H4z'/%3E%3Cpath d='m16 9 5 6m0-6-5 6' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 9h4l5-4v14l-5-4H4z'/%3E%3Cpath d='m16 9 5 6m0-6-5 6' stroke='black' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .snd.on { background: var(--blue); border-color: var(--blue); }
+  .snd.on::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 9h4l5-4v14l-5-4H4z'/%3E%3Cpath d='M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 9h4l5-4v14l-5-4H4z'/%3E%3Cpath d='M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E"); }
+  .reels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .clip { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #000; min-width: 0; }
+  .clip video { display: block; width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+  .clip.v video { aspect-ratio: 9 / 16; }
+  .clip.h { grid-column: 1 / -1; } .clip.h video { aspect-ratio: 16 / 9; }
+  .clip .snd { right: 10px; top: 10px; }
+
+  /* linha do tempo completa */
+  .tlbox { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .tl-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font: 500 12px var(--mono); color: var(--dim); }
+  .tl-live { display: inline-flex; align-items: center; gap: 7px; color: var(--ok); }
+  .tl-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+  .tl-scroll { overflow-x: auto; scrollbar-width: thin; margin-inline: -4px; padding-inline: 4px; }
+  .tl { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 10px; min-width: 760px; }
+  .tl-labels { display: grid; grid-template-rows: 20px repeat(7, 30px); row-gap: 6px; font: 600 12px var(--f); color: var(--muted); }
+  .tl-labels span { display: flex; align-items: center; }
+  .tl-lanes { position: relative; display: grid; grid-template-rows: 20px repeat(7, 30px); row-gap: 6px; }
+  .ruler { position: relative; border-bottom: 1px solid var(--line); }
+  .ruler span { position: absolute; top: 0; font: 500 10.5px var(--mono); color: var(--dim); transform: translateX(-1px); padding-left: 4px; border-left: 1px solid var(--line); height: 100%; }
+  .lane2 { position: relative; background: #0D0D10; border-radius: 7px; }
+  .lane2 i { position: absolute; top: 3px; bottom: 3px; border-radius: 5px; overflow: hidden; display: flex; align-items: center; padding-inline: 6px; font: 600 10.5px var(--f); font-style: normal; color: #fff; white-space: nowrap; }
+  .lane2 i span { overflow: hidden; text-overflow: clip; }
+  .t-video i { background: linear-gradient(180deg, #3B4FD9, #2B3AB0); border-right: 1px solid #0D0D10; }
+  .cut { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--cut); border-radius: 2px; z-index: 1; }
+  .cut::before { content: ""; position: absolute; top: -3px; left: -3px; width: 8px; height: 8px; background: var(--cut); clip-path: polygon(50% 100%, 0 0, 100% 0); }
+  .t-leg i { background: #26262D; color: #D4D4D8; font-size: 9px; letter-spacing: .02em; padding-inline: 4px; }
+  .t-leg i.hot { background: var(--blue); color: #fff; }
+  .t-motion i { background: linear-gradient(180deg, #8B5CF6, #6D28D9); }
+  .t-img i { background: linear-gradient(180deg, #0EA5E9, #0369A1); }
+  .t-fx i { background: linear-gradient(180deg, #F59E0B, #B45309); }
+  .t-sfx em { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; background: #22C55E; transform: rotate(45deg); border-radius: 2px; }
+  .t-sfx em span { position: absolute; left: 12px; top: -10px; transform: rotate(-45deg); transform-origin: 0 0; font: 600 9.5px var(--f); color: #86EFAC; white-space: nowrap; }
+  .t-music i { background: repeating-linear-gradient(90deg, rgba(34,197,94,.55) 0 2px, transparent 2px 4px), #0F2A1A; -webkit-mask: linear-gradient(#000, #000); color: #BBF7D0; }
+  .t-music i { background: #0F2A1A; }
+  .t-music i::before { content: ""; position: absolute; inset: 6px 0; background: repeating-linear-gradient(90deg, rgba(34,197,94,.7) 0 2px, transparent 2px 5px); -webkit-mask: radial-gradient(ellipse 3% 50% at 50% 50%, #000 0, transparent) 0 0 / 3% 100% repeat-x; opacity: .8; }
+  .t-music i span { position: relative; padding: 1px 6px; background: #0F2A1A; border-radius: 4px; }
+  .playhead { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: #fff; box-shadow: 0 0 12px rgba(255,255,255,.6); animation: scrub 14s linear infinite; z-index: 3; }
+  .playhead::before { content: ""; position: absolute; top: 0; left: -5px; width: 12px; height: 12px; background: #fff; clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }
+  @keyframes scrub { from { left: 0; } to { left: 100%; } }
+  .cutlist.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* frase em destaque */
+  .after-cmd { max-width: none; background: radial-gradient(120% 140% at 0% 0%, rgba(35,64,232,.28), transparent 60%), var(--surface); border: 1px solid #2a3170; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .after-cmd p { font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; color: var(--fg); }
+  .says { display: flex; flex-wrap: wrap; gap: 8px; }
+  .says span { font: 500 15px var(--mono); color: #fff; background: var(--blue); padding: 9px 14px; border-radius: 12px 12px 12px 4px; }
+
+  /* também */
+  .also { display: flex; flex-direction: column; gap: 16px; }
+  .also-t { font-size: 18px; color: var(--muted); max-width: 64ch; }
+  .also-t b { color: var(--fg); font-weight: 600; }
+  .also-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .also-grid div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; min-width: 0; }
+  .also-grid b { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .also-grid b::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--blue-2); }
+  .also-grid code { font: 12.5px/1.45 var(--mono); color: var(--muted); }
+
+  /* oferta estilo checkout */
+  .offer { gap: 32px; }
+  .deal { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+  .deal-left { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+  .cover { position: relative; padding: 18px 18px 30px; }
+  .cover-art { aspect-ratio: 16 / 10; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; background: radial-gradient(120% 90% at 85% 10%, #3D5BFF, #2340E8 35%, #0E1240 80%); border: 1px solid #3a4bd0; box-shadow: 0 40px 90px -30px rgba(35,64,232,.8); }
+  .cover-art b { font-size: clamp(22px, 3.4vw, 34px); line-height: 1.05; letter-spacing: -0.03em; max-width: 14ch; }
+  .cover-sub { font: 500 13px var(--mono); color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: .05em; }
+  .cover .brand i { background: #fff; color: var(--blue); }
+  .tag { position: absolute; font: 700 13px var(--f); background: var(--fg); color: var(--bg); padding: 7px 12px; border-radius: 99px; box-shadow: 0 10px 24px rgba(0,0,0,.4); }
+  .tag.t1 { top: 4px; right: 0; } .tag.t2 { bottom: 10px; left: 0; } .tag.t3 { bottom: 10px; right: 26px; background: var(--ok); color: #04210f; }
+  .get { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .get li { display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); }
+  .get li:first-child { border-top: 0; }
+  .get li::before { content: "✓"; grid-row: span 2; width: 22px; height: 22px; border-radius: 50%; background: rgba(34,197,94,.15); color: var(--ok); font: 800 12px var(--f); display: grid; place-items: center; margin-top: 2px; }
+  .get b { font-size: 17px; }
+  .get span { color: var(--muted); font-size: 15px; }
+  .checkout { background: var(--fg); color: #0A0A0B; border-radius: 24px; padding: 26px 22px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 40px 100px -30px rgba(35,64,232,.6); position: relative; }
+  .live { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font: 700 13px var(--f); color: #15803D; background: #DCFCE7; padding: 6px 12px; border-radius: 99px; }
+  .live i { width: 8px; height: 8px; border-radius: 50%; background: #16A34A; box-shadow: 0 0 0 0 rgba(22,163,74,.6); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(22,163,74,0); } 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); } }
+  .ck-name { font-weight: 700; font-size: 17px; color: #3F3F46; }
+  .ck-price { display: flex; align-items: baseline; justify-content: center; gap: 8px; line-height: .9; }
+  .ck-x { font-size: 20px; font-weight: 700; color: #52525B; }
+  .ck-big { display: flex; align-items: baseline; gap: 6px; line-height: .9; }
+  .h1-fix {}
+  .ck-price small { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+  .ck-price b { font-size: 84px; font-weight: 800; letter-spacing: -0.05em; }
+  .ck-pay { font-size: 15px; color: #71717A; padding-bottom: 4px; text-align: center; }
+  .ck-pay b { color: #0A0A0B; }
+  .ck-btn { width: 100%; font-size: 18px; padding: 18px; animation: nudge 3s ease-in-out infinite; }
+  @keyframes nudge { 0%, 85%, 100% { transform: none; } 90% { transform: scale(1.03); } 95% { transform: scale(.99); } }
+  .launch { display: flex; flex-direction: column; gap: 2px; background: #FEF3C7; border: 1px solid #FCD34D; border-radius: 12px; padding: 10px 12px; color: #78350F; font-size: 14px; }
+  .launch b { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: #B45309; display: flex; align-items: center; gap: 7px; }
+  .launch b::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #F59E0B; animation: pulse2 1.6s infinite; }
+  @keyframes pulse2 { 0% { box-shadow: 0 0 0 0 rgba(245,158,11,.6); } 70%, 100% { box-shadow: 0 0 0 7px rgba(245,158,11,0); } }
+  .pay { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .pay span { font: 700 11px var(--mono); letter-spacing: .04em; color: #52525B; border: 1px solid #D4D4D8; border-radius: 6px; padding: 4px 8px; background: #fff; }
+  .trust { list-style: none; margin: 4px 0 0; padding: 14px 0 0; border-top: 1px dashed #D4D4D8; display: flex; flex-direction: column; gap: 9px; font-size: 14px; color: #3F3F46; }
+  .trust li { display: flex; gap: 10px; align-items: center; }
+  .trust svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .seal { display: flex; gap: 14px; align-items: center; background: #fff; border: 1px solid #E4E4E7; border-radius: 16px; padding: 14px; }
+  .seal-badge { flex: none; width: 62px; height: 62px; border-radius: 50%; background: conic-gradient(from 0deg, #16A34A, #22C55E, #16A34A); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; box-shadow: inset 0 0 0 4px rgba(255,255,255,.35); }
+  .seal-badge b { font-size: 24px; line-height: 1; } .seal-badge span { font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .seal p { font-size: 14px; color: #52525B; line-height: 1.45; } .seal p b { color: #0A0A0B; }
+
+  /* ferramentas */
+  .tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .tool { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .tool .logo { width: 48px; height: 48px; border-radius: 13px; background: var(--surface-2); display: grid; place-items: center; margin-bottom: 4px; }
+  .tool .logo svg, .tool .logo img { width: 30px; height: 30px; display: block; object-fit: contain; }
+  .remo { width: 26px; height: 26px; border-radius: 50%; background: conic-gradient(#0B84F3, #8B5CF6, #0B84F3); }
+  .tool b { font-size: 18px; letter-spacing: -0.01em; }
+  .tool .d { font-size: 14px; color: var(--muted); line-height: 1.45; flex: 1; }
+  .st { display: flex; align-items: center; gap: 8px; font: 500 12px var(--mono); color: var(--ok); padding-top: 10px; border-top: 1px dashed var(--line); }
+  .st i { width: 16px; height: 16px; border-radius: 50%; background: var(--ok); display: grid; place-items: center; flex: none; }
+  .st i::after { content: "✓"; font: 800 10px var(--f); color: #04210f; font-style: normal; }
+  .st em { font-style: normal; }
+  .auto { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; background: linear-gradient(90deg, rgba(35,64,232,.16), transparent); border: 1px solid #2a3170; border-radius: 16px; padding: 16px 18px; font-size: 16px; color: var(--muted); }
+  .auto-cmd { font: 500 15px var(--mono); color: #fff; background: var(--blue); padding: 6px 12px; border-radius: 9px; flex: none; }
+
+
+  /* dúvidas em sanfona */
+  .faq { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; min-width: 0; }
+  .faq details { border-top: 1px solid var(--line); padding: 18px 20px; }
+  .faq details:first-child { border-top: 0; }
+  .faq summary { cursor: pointer; font-weight: 700; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--blue-2); font-size: 22px; line-height: 1; transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { color: var(--muted); font-size: 16px; margin-top: 8px; }
+  .faq details:first-child summary { color: var(--fg); }
+
+  /* barra de progresso da rolagem */
+  .scrollbar { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 20; pointer-events: none; }
+  .scrollbar i { display: block; height: 100%; background: var(--blue-2); transform-origin: 0 50%; transform: scaleX(0); }
+
+  /* movimento ao rolar (só quando o JS liga; sem JS tudo aparece) */
+  .app { transform-origin: 50% 100%; will-change: transform; }
+  @media (min-width: 900px) { .hero { perspective: 1400px; } }
+  .anim .rv { opacity: 0; transform: translateY(32px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  .anim .rv.in { opacity: 1; transform: none; }
+  .anim #app.rv { transform: translateY(32px); }
+  .anim .stagger > * { opacity: 0; transform: translateY(24px) scale(.98); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+  .anim .stagger.in > * { opacity: 1; transform: none; }
+  .anim .reel-strip.in > :nth-child(2) { transform: translateY(36px); }
+  @media (max-width: 899px) { .anim .reel-strip.in > :nth-child(2) { transform: none; } }
+  .bar.after { width: 43%; }
+  .anim .bar.after { width: 100%; transition: width 1.2s cubic-bezier(.6,0,.2,1) .3s; }
+  .anim .cutbox.in .bar.after { width: 43%; }
+  .anim .bar:not(.after) i.x { transition: opacity .5s ease .2s; }
+  .anim .cutbox.in .bar:not(.after) i.x { animation: blink 1.2s ease 2; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .anim .tool:not(.ok) .st { color: var(--dim); }
+  .anim .tool:not(.ok) .st i { background: transparent; border: 2px solid var(--dim); border-top-color: var(--blue-2); animation: spin .8s linear infinite; }
+  .anim .tool:not(.ok) .st i::after { content: ""; }
+  .anim .tool.ok .st i { animation: pop .35s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pop { from { transform: scale(.3); } to { transform: scale(1); } }
+
+  footer { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--dim); border-top: 1px solid var(--line); padding-top: 24px; }
+  .sticky { display: none; }
+  a:focus-visible, button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+  @media (min-width: 900px) {
+    .page { padding-inline: 40px; gap: 150px; }
+    .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 56px; padding-top: 56px; }
+    .cutlist { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .cutbox { padding: 34px; }
+    .memory { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; }
+    .cmds { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .tools { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .tool { padding: 22px; }
+    .reel-strip { grid-template-columns: repeat(3, 220px); justify-content: start; gap: 18px; }
+    .reel:nth-child(2) { transform: translateY(36px); }
+    .fit { grid-template-columns: 1.3fr 1fr; }
+    .inside { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero-vid { justify-self: end; margin-right: 40px; }
+    .reels { grid-template-columns: 230px 230px minmax(0, 1fr); align-items: center; gap: 16px; }
+    .clip.h { grid-column: auto; }
+    .reels > :nth-child(2) { margin-top: 48px; }
+    .cutlist.six { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .tlbox { padding: 26px; }
+    .deal { grid-template-columns: minmax(0, 1.15fr) 400px; gap: 48px; }
+    .checkout { position: sticky; top: 24px; padding: 32px 28px; }
+    .also-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .price { padding: 64px 48px 48px; }
+    .qa { grid-template-columns: 340px minmax(0, 1fr); gap: 56px; }
+  }
+  @media (min-width: 600px) and (max-width: 899px) { .cmds { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .page { gap: 88px; }
+    .sub { font-size: 17px; }
+    .ctas .btn { flex: 1 1 100%; }
+    .app-main { grid-template-columns: minmax(0, 1fr) 96px; }
+    .reel-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .reel figcaption { font-size: 12px; }
+    .sticky { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(9,9,11,.94); border-top: 1px solid var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); align-items: center; gap: 12px; justify-content: space-between; transform: translateY(110%); transition: transform .3s; }
+    .sticky.show { transform: none; }
+    .sticky p { font-size: 14px; font-weight: 600; line-height: 1.3; }
+    .sticky p span { color: var(--muted); font-weight: 500; }
+    .sticky .btn { padding: 11px 18px; font-size: 15px; }
+  }
+  @media (max-width: 899px) {
+    .hero { text-align: center; padding-top: 40px; }
+    .hero-txt { align-items: center; }
+    .hero .sub { margin-inline: auto; }
+    .ctas, .facts { justify-content: center; }
+    .hero-k { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .hero-k .dot { display: none; }
+    .hero-k .by { white-space: nowrap; }
+    .vid-badge { left: 50%; transform: translateX(-50%); bottom: -16px; white-space: nowrap; }
+    .hero-vid { margin-bottom: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .cap span, .head-line, .ck-btn, .live i, .playhead, .launch b::before { animation: none; } .app { transform: none !important; } .sticky { transition: none; } }
+
+  h1 .ln { display: block; }
+  .hero-k .by { color: var(--muted); }
+  .also-grid b { white-space: nowrap; }
+  @media (max-width: 899px) { .also-grid div:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 400px) { .ck-price b { font-size: 72px; } }
+  .ck-box { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0 6px; text-align: center; }
+  .ck-de { font-size: 22px; font-weight: 700; color: #3F3F46; letter-spacing: -0.01em; }
+  .ck-de s { text-decoration-thickness: 2px; color: #52525B; }
+  .ck-box .ck-price { display: flex; align-items: center; justify-content: center; gap: 10px; line-height: .95; color: var(--blue); }
+  .ck-box .ck-x { font-size: 40px; font-weight: 400; color: var(--blue); letter-spacing: -0.02em; }
+  .ck-box .ck-price b { font-size: 96px; font-weight: 800; letter-spacing: -0.05em; color: var(--blue); }
+  .ck-box .ck-pay { font-size: 16px; color: #52525B; padding: 0; }
+  @media (max-width: 400px) { .ck-box .ck-price b { font-size: 80px; } .ck-box .ck-x { font-size: 34px; } }
+
+  .brand-logo { display: inline-flex; }
+  .brand-logo .logo { height: 40px; width: auto; display: block; }
+  .cover-art .logo-cover { height: 44px; width: auto; display: block; align-self: flex-start; }
+  @media (max-width: 640px) { .brand-logo .logo { height: 34px; } .cover-art .logo-cover { height: 34px; } }
+
+  .foot-logo .logo { height: 36px; width: auto; display: block; margin-bottom: 8px; }
+  .top { margin-bottom: -56px; }
+  .hero { padding-top: 12px !important; }
+  @media (min-width: 900px) { .top { margin-bottom: -110px; } .hero { padding-top: 24px !important; } }
+
+  /* instalação: zip arrastado pro chat */
+  .dd { position: relative; height: 400px; display: grid; grid-template-columns: 26% minmax(0, 1fr); gap: 4%; --x0: 13%; --y0: 50%; --x1: 52%; --y1: 88%; }
+  .dd-finder, .dd-chat { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+  .dd-chat { box-shadow: 0 40px 100px -40px rgba(35,64,232,.7); }
+  .dd-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--line); font: 500 12px var(--mono); color: var(--dim); }
+  .dd-bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--surface-2); }
+  .dd-bar span { margin-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dd-file { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font: 500 12px var(--mono); color: var(--muted); text-align: center; padding: 10px; }
+  .dd-file svg { width: 54px; height: 64px; animation: dd-src 9s infinite; }
+  .dd-msgs { flex: 1; padding: 18px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .dd-me { align-self: flex-end; background: var(--blue); color: #fff; padding: 10px 14px; border-radius: 14px 14px 4px 14px; font-size: 15px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; opacity: 0; animation: dd-me 9s infinite; }
+  .dd-chip, .dd-inchip { display: inline-flex; align-items: center; gap: 6px; font: 500 12px var(--mono); background: rgba(255,255,255,.16); padding: 5px 9px; border-radius: 8px; white-space: nowrap; }
+  .dd-chip svg, .dd-inchip svg { width: 14px; height: 17px; }
+  .dd-ai { align-self: flex-start; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: var(--muted); }
+  .dd-ai p { opacity: 0; transform: translateY(6px); }
+  .dd-ai b { color: var(--ok); }
+  .dd-ai strong { color: var(--fg); }
+  .dd-ai code { font: 500 13px var(--mono); color: #fff; background: var(--blue); padding: 2px 7px; border-radius: 6px; }
+  .dd-ai .l1 { animation: dd-l1 9s infinite; } .dd-ai .l2 { animation: dd-l2 9s infinite; } .dd-ai .l3 { animation: dd-l3 9s infinite; } .dd-ai .l4 { animation: dd-l4 9s infinite; }
+  .dd-input { margin: 0 14px 14px; min-height: 52px; border: 1px solid var(--line); border-radius: 14px; background: #0D0D10; display: flex; align-items: center; gap: 10px; padding: 8px 12px; position: relative; animation: dd-input 9s infinite; }
+  .dd-inchip { background: var(--surface-2); color: var(--fg); opacity: 0; animation: dd-inchip 9s infinite; }
+  .dd-type { font-size: 15px; color: var(--fg); overflow: hidden; white-space: nowrap; width: 0; border-right: 2px solid var(--blue-2); animation: dd-type 9s infinite steps(7, end); }
+  .dd-ph { position: absolute; left: 14px; font-size: 14px; color: var(--dim); animation: dd-ph 9s infinite; }
+  .dd-ghost { position: absolute; left: var(--x0); top: var(--y0); width: 54px; height: 64px; margin: -32px 0 0 -27px; opacity: 0; pointer-events: none; animation: dd-ghost 9s infinite cubic-bezier(.45,0,.2,1); z-index: 3; filter: drop-shadow(0 16px 24px rgba(0,0,0,.6)); }
+  .dd-ghost > svg { width: 100%; height: 100%; }
+  .dd-cursor { position: absolute; right: -14px; bottom: -14px; width: 26px; height: 26px; }
+  .dd-cursor svg { width: 100%; height: 100%; }
+  @keyframes dd-src { 0%, 8% { opacity: 1; } 10%, 92% { opacity: .25; } 100% { opacity: 1; } }
+  @keyframes dd-ghost { 0%, 6% { opacity: 0; left: var(--x0); top: var(--y0); transform: scale(1); } 9% { opacity: 1; left: var(--x0); top: var(--y0); transform: scale(1.08) rotate(-4deg); } 33% { opacity: 1; left: var(--x1); top: var(--y1); transform: scale(1) rotate(3deg); } 37%, 100% { opacity: 0; left: var(--x1); top: var(--y1); transform: scale(.4); } }
+  @keyframes dd-input { 0%, 26% { border-color: var(--line); box-shadow: none; } 29%, 35% { border-color: var(--blue-2); box-shadow: 0 0 0 4px rgba(43,75,255,.25); } 38%, 100% { border-color: var(--line); box-shadow: none; } }
+  @keyframes dd-inchip { 0%, 35% { opacity: 0; } 37%, 52% { opacity: 1; } 54%, 100% { opacity: 0; } }
+  @keyframes dd-ph { 0%, 34% { opacity: 1; } 36%, 53% { opacity: 0; } 55%, 100% { opacity: 1; } }
+  @keyframes dd-type { 0%, 40% { width: 0; } 49%, 52% { width: 4.2em; } 54%, 100% { width: 0; border-color: transparent; } }
+  @keyframes dd-me { 0%, 53% { opacity: 0; transform: translateY(10px); } 56%, 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; } }
+  @keyframes dd-l1 { 0%, 60% { opacity: 0; transform: translateY(6px); } 63%, 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; } }
+  @keyframes dd-l2 { 0%, 66% { opacity: 0; transform: translateY(6px); } 69%, 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; } }
+  @keyframes dd-l3 { 0%, 72% { opacity: 0; transform: translateY(6px); } 75%, 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; } }
+  @keyframes dd-l4 { 0%, 79% { opacity: 0; transform: translateY(6px); } 82%, 94% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; } }
+  .steps3 { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .steps3 li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .steps3 em { font-style: normal; width: 40px; height: 40px; border-radius: 12px; background: var(--blue); color: #fff; font-weight: 800; font-size: 18px; display: grid; place-items: center; }
+  .steps3 b { display: block; font-size: 17px; }
+  .steps3 span { color: var(--muted); font-size: 15px; }
+  .after-steps { color: var(--muted); font-size: 17px; }
+  .after-steps b { color: var(--fg); }
+  @media (min-width: 900px) { .steps3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .dd { height: 420px; } }
+  @media (max-width: 640px) {
+    .dd { height: 540px; grid-template-columns: minmax(0, 1fr); grid-template-rows: 130px minmax(0, 1fr); gap: 14px; --x0: 50%; --y0: 15%; --x1: 50%; --y1: 92%; }
+    .dd-file { flex-direction: row; }
+    .dd-file svg { width: 40px; height: 48px; }
+    .dd-msgs { padding: 14px; }
+    .dd-me, .dd-ai { font-size: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dd-ghost { display: none; }
+    .dd-me, .dd-ai p { animation: none; opacity: 1; transform: none; }
+    .dd-input, .dd-inchip, .dd-type, .dd-ph, .dd-file svg { animation: none; }
+  }
+
+  /* pra quem é */
+  .who4 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .who-c { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .who-t { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  .who-c p { font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 4px; }
+  .who-c p i { font-style: normal; font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .who-hoje { color: var(--muted); }
+  .who-hoje i { color: #F87171; }
+  .who-agora { color: var(--fg); padding-top: 12px; border-top: 1px dashed var(--line); }
+  .who-agora i { color: var(--ok); }
+  .who-end { font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; color: var(--muted); }
+  .who-end strong { color: var(--fg); background: var(--blue); padding: 0 .25em; border-radius: .2em; }
+  @media (min-width: 900px) { .who4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 600px) and (max-width: 899px) { .who4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* aulas: não é curso de edição */
+  .get .notcourse { grid-column: 2; margin-top: 8px; display: inline-block; justify-self: start; font-size: 14px; color: #fff; background: rgba(35,64,232,.18); border: 1px solid var(--blue-2); padding: 6px 12px; border-radius: 10px; }
+  .get .notcourse strong { color: #9DB0FF; }
+  .get .li-aulas::before { grid-row: span 3; }
+
+  .cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .cta-row span { font-size: 14px; color: var(--muted); }
+  .qa .cta-row { grid-column: 1 / -1; }
+  @media (max-width: 640px) { .cta-row { flex-direction: column; align-items: stretch; text-align: center; gap: 10px; } .cta-row .btn { width: 100%; } }
+
+  /* Área de membros estilo Netflix */
+  .nf { background: #0E0E12; border: 1px solid var(--line); border-radius: 22px; padding: 18px 0 26px; overflow: hidden; box-shadow: 0 40px 100px -50px rgba(35,64,232,.7); }
+  .nf-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 22px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .nf-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--fg); }
+  .nf-brand i { width: 10px; height: 10px; border-radius: 3px; background: var(--blue); }
+  .nf-row-h { display: flex; justify-content: space-between; align-items: baseline; padding: 20px 22px 12px; }
+  .nf-row-h b { font-size: 19px; letter-spacing: -.01em; }
+  .nf-row-h span { font-size: 13px; color: var(--dim); }
+  .nf-row { overflow: hidden; padding: 16px 0 20px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .nf-belt { display: flex; width: max-content; animation: nfloop 38s linear infinite; }
+  .nf-row:hover .nf-belt { animation-play-state: paused; }
+  @keyframes nfloop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .nf-card { flex: 0 0 180px; margin-right: 14px; position: relative; border-radius: 10px; overflow: hidden; background: var(--surface); transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+  .nf-card img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+  .nf-info { position: absolute; inset: auto 0 0 0; padding: 40px 12px 12px; background: linear-gradient(transparent, rgba(9,9,11,.96) 45%); display: flex; flex-direction: column; gap: 2px; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+  .nf-info b { font: 500 11px var(--mono); color: #9DB0FF; text-transform: uppercase; letter-spacing: .06em; }
+  .nf-info span { font-size: 14px; font-weight: 700; line-height: 1.25; }
+  .nf-info i { font-style: normal; font-size: 12px; color: var(--muted); }
+  .nf-card:hover { transform: scale(1.07); z-index: 2; box-shadow: 0 20px 40px -10px rgba(35,64,232,.8); }
+  .nf-card:hover .nf-info { opacity: 1; transform: none; }
+  .nf-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .nf-chips span { font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
+  .nf-chips span::before { content: "✓"; color: var(--ok); margin-right: 8px; }
+  @media (prefers-reduced-motion: reduce) { .nf-belt { animation: none; } .nf-row { overflow-x: auto; } }
+  @media (max-width: 640px) { .nf-card { flex-basis: 140px; margin-right: 10px; } .nf-belt { animation-duration: 30s; } .nf-row-h b { font-size: 17px; } .nf-top { flex-direction: column; align-items: flex-start; gap: 4px; } .nf-chips span { font-size: 13px; } }
+</style>
+</head>
+<body>
+<div class="scrollbar" aria-hidden="true"><i id="sbar"></i></div>
+<div class="page">
+
+  <nav class="top">
+    <a class="brand-logo" href="#" aria-label="Estúdio Reels com IA, início"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445 120" class="logo" role="img" aria-label="Estúdio Reels com IA">      <g transform="translate(6,10)">     <rect x="20" y="10" width="48" height="82" rx="14" fill="#2340E8"/>     <path d="M37 30.5c0-2.6 2.8-4.2 5-2.9l14.4 8.6c2.2 1.3 2.2 4.5 0 5.8L42 50.6c-2.2 1.3-5-.3-5-2.9z" fill="#FFFFFF"/>     <rect x="30" y="62" width="28" height="6.5" rx="3.25" fill="#FFFFFF"/>     <rect x="35" y="73" width="18" height="6.5" rx="3.25" fill="#FFFFFF" opacity=".55"/>     <path d="M80 2c1 7.4 3.6 10 11 11-7.4 1-10 3.6-11 11-1-7.4-3.6-10-11-11 7.4-1 10-3.6 11-11z" fill="#FFFFFF"/>     </g>   <path transform="translate(118,58)" d="M3.128 0.0V-32.66H26.588V-26.128H11.132V-19.642H26.035999999999998V-13.11H11.132V-6.532H26.956V0.0ZM41.4 0.552Q37.214 0.552 34.569 -0.5289999999999999Q31.924 -1.6099999999999999 30.59 -3.4959999999999996Q29.256 -5.382 29.072 -7.774L37.076 -8.05Q37.352 -6.394 38.364 -5.566Q39.376 -4.7379999999999995 41.446 -4.7379999999999995Q43.056 -4.7379999999999995 43.907 -5.289999999999999Q44.757999999999996 -5.842 44.757999999999996 -6.8999999999999995Q44.757999999999996 -7.59 44.413 -8.05Q44.068 -8.51 43.07899999999999 -8.878Q42.089999999999996 -9.246 40.204 -9.568Q36.202 -10.212 33.902 -11.155Q31.602 -12.097999999999999 30.682000000000002 -13.57Q29.762 -15.042 29.762 -17.25Q29.762 -20.884 32.637 -23.092Q35.512 -25.3 41.308 -25.3Q45.218 -25.3 47.702 -24.195999999999998Q50.186 -23.092 51.474000000000004 -21.137Q52.762 -19.182 52.9 -16.605999999999998L45.034 -16.33Q44.988 -17.48 44.574 -18.308Q44.16 -19.136 43.331999999999994 -19.573Q42.504 -20.009999999999998 41.216 -20.009999999999998Q39.698 -20.009999999999998 38.801 -19.342999999999996Q37.903999999999996 -18.676 37.903999999999996 -17.526Q37.903999999999996 -16.744 38.272 -16.215Q38.64 -15.686 39.537 -15.364Q40.434 -15.042 41.998 -14.812Q45.95399999999999 -14.306 48.346 -13.317Q50.738 -12.328 51.819 -10.786999999999999Q52.9 -9.246 52.9 -7.038Q52.9 -3.358 49.840999999999994 -1.403Q46.782 0.552 41.4 0.552ZM66.562 0.0Q62.56 0.0 60.697 -1.863Q58.834 -3.726 58.834 -7.82V-30.544H66.74600000000001V-8.832Q66.74600000000001 -7.038 67.50500000000001 -6.371Q68.26400000000001 -5.704 69.828 -5.704H73.232V0.0ZM54.74 -19.044V-24.748H73.232V-19.044ZM83.904 0.552Q80.04 0.552 77.90100000000001 -1.909Q75.762 -4.37 75.762 -8.786V-24.748H83.674V-10.626Q83.674 -8.004 84.433 -6.808Q85.19200000000001 -5.612 86.848 -5.612Q88.688 -5.612 89.67699999999999 -6.923Q90.666 -8.234 90.666 -11.04V-24.748H98.578V0.0H91.44800000000001L91.218 -7.452L92.138 -7.314Q91.678 -3.358 89.608 -1.403Q87.538 0.552 83.904 0.552ZM83.44399999999999 -27.094 86.066 -34.178H93.564L89.42399999999999 -27.094ZM111.64200000000001 0.552Q108.51400000000001 0.552 106.28300000000002 -1.035Q104.052 -2.622 102.81 -5.52Q101.56800000000001 -8.418 101.56800000000001 -12.374Q101.56800000000001 -16.33 102.81 -19.228Q104.052 -22.126 106.32900000000001 -23.713Q108.60600000000001 -25.3 111.64200000000001 -25.3Q114.31 -25.3 116.196 -24.219Q118.08200000000001 -23.137999999999998 119.048 -21.206V-32.66H126.96000000000001V0.0H119.32400000000001L119.186 -3.588Q118.174 -1.6099999999999999 116.196 -0.5289999999999999Q114.218 0.552 111.64200000000001 0.552ZM114.402 -5.29Q115.92 -5.29 116.95500000000001 -6.072Q117.99000000000001 -6.854 118.519 -8.418Q119.048 -9.982 119.048 -12.374Q119.048 -14.766 118.519 -16.33Q117.99000000000001 -17.894 116.95500000000001 -18.676Q115.92 -19.458 114.402 -19.458Q112.24000000000001 -19.458 110.97500000000001 -17.549Q109.71000000000001 -15.64 109.71000000000001 -12.374Q109.71000000000001 -9.2 110.998 -7.244999999999999Q112.286 -5.29 114.402 -5.29ZM131.192 0.0V-24.748H139.10399999999998V0.0ZM131.054 -27.508V-33.396H139.24200000000002V-27.508ZM155.112 0.552Q151.202 0.552 148.281 -1.058Q145.36 -2.668 143.727 -5.566000000000001Q142.094 -8.464 142.094 -12.374Q142.094 -16.284 143.727 -19.182Q145.36 -22.08 148.281 -23.689999999999998Q151.202 -25.3 155.112 -25.3Q159.022 -25.3 161.92000000000002 -23.689999999999998Q164.818 -22.08 166.45100000000002 -19.182Q168.084 -16.284 168.084 -12.374Q168.084 -8.464 166.45100000000002 -5.566000000000001Q164.818 -2.668 161.92000000000002 -1.058Q159.022 0.552 155.112 0.552ZM155.112 -5.29Q157.412 -5.29 158.67700000000002 -7.130000000000001Q159.942 -8.97 159.942 -12.374Q159.942 -15.732 158.67700000000002 -17.595Q157.412 -19.458 155.112 -19.458Q152.766 -19.458 151.50099999999998 -17.595Q150.236 -15.732 150.236 -12.374Q150.236 -8.97 151.50099999999998 -7.130000000000001Q152.766 -5.29 155.112 -5.29ZM180.18200000000002 0.0V-32.66H195.132Q198.766 -32.66 201.457 -31.464Q204.148 -30.268 205.62 -28.083Q207.092 -25.898 207.092 -22.954Q207.092 -20.654 206.17200000000003 -18.906Q205.252 -17.158 203.619 -16.031Q201.986 -14.904 199.732 -14.536L199.594 -14.996Q202.952 -14.996 204.677 -13.57Q206.402 -12.144 206.586 -9.292L207.368 0.0H199.18L198.674 -7.958Q198.536 -9.798 197.59300000000002 -10.672Q196.65 -11.546 194.304 -11.546H188.186V0.0ZM188.186 -18.078H193.89Q196.328 -18.078 197.61599999999999 -19.136Q198.904 -20.194 198.904 -22.126Q198.904 -24.104 197.59300000000002 -25.116Q196.282 -26.128 193.798 -26.128H188.186ZM222.594 0.552Q218.73000000000002 0.552 215.832 -1.058Q212.934 -2.668 211.324 -5.566000000000001Q209.714 -8.464 209.714 -12.374Q209.714 -16.284 211.324 -19.159Q212.934 -22.034 215.809 -23.667Q218.684 -25.3 222.548 -25.3Q226.412 -25.3 229.24099999999999 -23.667Q232.07 -22.034 233.588 -18.997999999999998Q235.106 -15.962 235.106 -11.776V-10.304H217.90200000000002Q218.04000000000002 -7.728 219.351 -6.462999999999999Q220.662 -5.1979999999999995 222.732 -5.1979999999999995Q224.296 -5.1979999999999995 225.35399999999998 -5.818999999999999Q226.412 -6.4399999999999995 226.872 -7.866L234.784 -7.406Q233.772 -3.542 230.506 -1.4949999999999999Q227.24 0.552 222.594 0.552ZM217.90200000000002 -14.812H227.102Q227.01 -17.25 225.768 -18.469Q224.526 -19.688 222.548 -19.688Q220.662 -19.688 219.397 -18.4Q218.132 -17.112 217.90200000000002 -14.812ZM249.734 0.552Q245.87000000000003 0.552 242.97200000000004 -1.058Q240.074 -2.668 238.464 -5.566000000000001Q236.854 -8.464 236.854 -12.374Q236.854 -16.284 238.464 -19.159Q240.074 -22.034 242.949 -23.667Q245.824 -25.3 249.68800000000002 -25.3Q253.55200000000002 -25.3 256.38100000000003 -23.667Q259.21000000000004 -22.034 260.72800000000007 -18.997999999999998Q262.24600000000004 -15.962 262.24600000000004 -11.776V-10.304H245.04200000000003Q245.18 -7.728 246.491 -6.462999999999999Q247.80200000000002 -5.1979999999999995 249.872 -5.1979999999999995Q251.43600000000004 -5.1979999999999995 252.49400000000003 -5.818999999999999Q253.55200000000002 -6.4399999999999995 254.01200000000003 -7.866L261.92400000000004 -7.406Q260.91200000000003 -3.542 257.646 -1.4949999999999999Q254.38000000000002 0.552 249.734 0.552ZM245.04200000000003 -14.812H254.24200000000002Q254.15000000000003 -17.25 252.90800000000002 -18.469Q251.66600000000003 -19.688 249.68800000000002 -19.688Q247.80200000000002 -19.688 246.53700000000003 -18.4Q245.27200000000002 -17.112 245.04200000000003 -14.812ZM272.228 0.0Q268.916 0.0 267.076 -1.656Q265.236 -3.312 265.236 -7.038V-32.66H273.148V-7.912Q273.148 -6.716 273.70000000000005 -6.21Q274.252 -5.704 275.264 -5.704H276.782V0.0ZM290.03000000000003 0.552Q285.84400000000005 0.552 283.19900000000007 -0.5289999999999999Q280.55400000000003 -1.6099999999999999 279.22 -3.4959999999999996Q277.886 -5.382 277.70200000000006 -7.774L285.706 -8.05Q285.982 -6.394 286.994 -5.566Q288.00600000000003 -4.7379999999999995 290.076 -4.7379999999999995Q291.68600000000004 -4.7379999999999995 292.53700000000003 -5.289999999999999Q293.38800000000003 -5.842 293.38800000000003 -6.8999999999999995Q293.38800000000003 -7.59 293.043 -8.05Q292.69800000000004 -8.51 291.70900000000006 -8.878Q290.72 -9.246 288.83400000000006 -9.568Q284.83200000000005 -10.212 282.53200000000004 -11.155Q280.232 -12.097999999999999 279.312 -13.57Q278.39200000000005 -15.042 278.39200000000005 -17.25Q278.39200000000005 -20.884 281.26700000000005 -23.092Q284.14200000000005 -25.3 289.93800000000005 -25.3Q293.848 -25.3 296.332 -24.195999999999998Q298.81600000000003 -23.092 300.10400000000004 -21.137Q301.39200000000005 -19.182 301.53000000000003 -16.605999999999998L293.66400000000004 -16.33Q293.61800000000005 -17.48 293.20400000000006 -18.308Q292.79 -19.136 291.962 -19.573Q291.134 -20.009999999999998 289.84600000000006 -20.009999999999998Q288.32800000000003 -20.009999999999998 287.43100000000004 -19.342999999999996Q286.53400000000005 -18.676 286.53400000000005 -17.526Q286.53400000000005 -16.744 286.90200000000004 -16.215Q287.27000000000004 -15.686 288.16700000000003 -15.364Q289.064 -15.042 290.62800000000004 -14.812Q294.58400000000006 -14.306 296.97600000000006 -13.317Q299.36800000000005 -12.328 300.44900000000007 -10.786999999999999Q301.53000000000003 -9.246 301.53000000000003 -7.038Q301.53000000000003 -3.358 298.471 -1.403Q295.41200000000003 0.552 290.03000000000003 0.552Z" fill="#FFFFFF"/>   <path transform="translate(118,106)" d="M13.524 0.552Q10.028 0.552 7.406000000000001 -1.012Q4.784 -2.576 3.3579999999999997 -5.474Q1.932 -8.372 1.932 -12.236Q1.932 -16.1 3.3579999999999997 -18.975Q4.784 -21.849999999999998 7.406000000000001 -23.436999999999998Q10.028 -25.024 13.524 -25.024Q16.514 -25.024 18.837 -23.989Q21.16 -22.954 22.609 -20.976Q24.058 -18.998 24.472 -16.146L19.366 -15.87Q18.998 -18.262 17.434 -19.527Q15.87 -20.791999999999998 13.524 -20.791999999999998Q10.442 -20.791999999999998 8.717 -18.515Q6.992 -16.238 6.992 -12.236Q6.992 -8.234 8.717 -5.957Q10.442 -3.6799999999999997 13.524 -3.6799999999999997Q15.87 -3.6799999999999997 17.434 -4.991Q18.998 -6.302 19.366 -8.97L24.472 -8.693999999999999Q24.058 -5.888 22.609 -3.818Q21.16 -1.748 18.837 -0.598Q16.514 0.552 13.524 0.552ZM38.501999999999995 0.552Q35.006 0.552 32.384 -1.012Q29.761999999999997 -2.576 28.336 -5.474Q26.909999999999997 -8.372 26.909999999999997 -12.236Q26.909999999999997 -16.146 28.336 -18.997999999999998Q29.761999999999997 -21.849999999999998 32.384 -23.436999999999998Q35.006 -25.024 38.501999999999995 -25.024Q41.998 -25.024 44.62 -23.436999999999998Q47.242 -21.849999999999998 48.66799999999999 -18.997999999999998Q50.093999999999994 -16.146 50.093999999999994 -12.236Q50.093999999999994 -8.372 48.66799999999999 -5.474Q47.242 -2.576 44.62 -1.012Q41.998 0.552 38.501999999999995 0.552ZM38.501999999999995 -3.6799999999999997Q41.629999999999995 -3.6799999999999997 43.331999999999994 -5.957Q45.034 -8.234 45.034 -12.236Q45.034 -16.238 43.331999999999994 -18.515Q41.629999999999995 -20.791999999999998 38.501999999999995 -20.791999999999998Q35.42 -20.791999999999998 33.695 -18.515Q31.97 -16.238 31.97 -12.236Q31.97 -8.234 33.695 -5.957Q35.42 -3.6799999999999997 38.501999999999995 -3.6799999999999997ZM54.556 0.0V-24.472H59.017999999999994L59.15599999999999 -18.4L58.60399999999999 -18.584Q59.017999999999994 -20.608 60.053 -22.034Q61.087999999999994 -23.46 62.605999999999995 -24.242Q64.124 -25.024 65.91799999999999 -25.024Q69.04599999999999 -25.024 71.024 -23.253Q73.002 -21.482 73.508 -18.4H72.726Q73.13999999999999 -20.562 74.12899999999999 -22.011000000000003Q75.118 -23.46 76.68199999999999 -24.242Q78.246 -25.024 80.22399999999999 -25.024Q82.8 -25.024 84.61699999999999 -23.942999999999998Q86.434 -22.862 87.377 -20.792Q88.32 -18.722 88.32 -15.732V0.0H83.44399999999999V-14.536Q83.44399999999999 -17.71 82.29399999999998 -19.32Q81.14399999999999 -20.93 78.798 -20.93Q77.28 -20.93 76.13 -20.148Q74.97999999999999 -19.366 74.359 -17.894Q73.738 -16.422 73.738 -14.352V0.0H69.092V-14.352Q69.092 -17.48 68.05699999999999 -19.205Q67.02199999999999 -20.93 64.538 -20.93Q62.974 -20.93 61.846999999999994 -20.148Q60.71999999999999 -19.366 60.07599999999999 -17.871000000000002Q59.431999999999995 -16.376 59.431999999999995 -14.352V0.0Z" fill="#FFFFFF"/>   <path transform="translate(220.07399999999998,106)" d="M3.128 0.0V-32.66H11.132V0.0ZM13.707999999999998 0.0 25.483999999999998 -32.66H34.775999999999996L46.55199999999999 0.0H38.318L36.202 -6.164H24.058L21.896 0.0ZM26.22 -12.512H34.04L30.176 -24.012Z" fill="#2340E8"/> </svg></a>
+    <a href="#oferta">Garantir acesso</a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-txt rv">
+      <span class="kicker hero-k"><span><b>●</b> Estúdio de Reels com IA</span><span class="by"><span class="dot"> · </span>por @rodigocarvalho</span></span>
+      <h1><span class="ln">Você grava.</span> <span class="ln mark">A IA edita.</span> <span class="ln">Do seu jeito.</span></h1>
+      <p class="sub">Um estúdio de edição que roda no seu computador e obedece ao que você escreve: corta silêncios e vícios, legenda palavra por palavra, anima números e devolve o Reels pronto pra postar.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#oferta">Quero o estúdio <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn ghost" href="#como">Ver como funciona</a>
+      </div>
+      <div class="facts"><span>Instala soltando 1 arquivo</span><span>Sem saber programar</span><span>Mac e Windows</span><span>Acesso vitalício</span></div>
+    </div>
+
+    <div class="hero-vid rv" id="app">
+      <div class="phone-frame"><video src="m/estilo-c.mp4" poster="m/poster-c.jpg" autoplay muted loop playsinline preload="auto" aria-label="Reels editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <span class="vid-badge"><i></i>Editado 100% pela IA</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="head rv">
+      <span class="kicker">01 · Edições feitas pelo estúdio</span>
+      <h2>O estilo que você quiser.</h2>
+    </div>
+    <div class="reels stagger">
+      <div class="clip v"><video src="m/estilo-a.mp4" poster="m/poster-a.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo A"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip v"><video src="m/estilo-b.mp4" poster="m/poster-b.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo B"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip h"><video src="m/estilo-d.mp4" poster="m/poster-d.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo horizontal editado no estilo D"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+    </div>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Quero editar assim <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <section id="como">
+    <div class="head rv">
+      <span class="kicker">02 · O trabalho chato</span>
+      <h2>Horas cortando, legendando, colocando efeito, sons... <span class="mark">ao invés de tá faturando com o digital.</span></h2>
+      <p class="sub">Um Reels de um minuto tem tudo isso aí embaixo. Na mão, são horas no editor. No estúdio, a IA monta cada faixa e você só aprova.</p>
+    </div>
+    <div class="tlbox rv" id="cutbox">
+      <div class="tl-top"><span class="tl-file">reels-final.mp4 · 1080x1920 · 0:58</span><span class="tl-live"><i></i>montado pela IA</span></div>
+      <div class="tl-scroll">
+        <div class="tl">
+          <div class="tl-labels"><span></span><span>Vídeo</span><span>Legendas</span><span>Motion</span><span>Imagens</span><span>Efeitos</span><span>Sons</span><span>Música</span></div>
+          <div class="tl-lanes">
+            <div class="ruler"><span style="left:0.00%">0:00</span><span style="left:17.24%">0:10</span><span style="left:34.48%">0:20</span><span style="left:51.72%">0:30</span><span style="left:68.97%">0:40</span><span style="left:86.21%">0:50</span></div>
+            <div class="lane2 t-video"><i class="" style="left:0.00%;width:7.24%"><span>take 1</span></i><i class="" style="left:7.24%;width:9.66%"><span>take 2</span></i><i class="" style="left:16.90%;width:5.69%"><span>take 3</span></i><i class="" style="left:22.59%;width:9.48%"><span>take 4</span></i><i class="" style="left:32.07%;width:6.55%"><span>take 5</span></i><i class="" style="left:38.62%;width:9.48%"><span>take 6</span></i><i class="" style="left:48.10%;width:6.21%"><span>take 7</span></i><i class="" style="left:54.31%;width:8.10%"><span>take 8</span></i><i class="" style="left:62.41%;width:9.48%"><span>take 9</span></i><i class="" style="left:71.90%;width:6.21%"><span>take 10</span></i><i class="" style="left:78.10%;width:9.48%"><span>take 11</span></i><i class="" style="left:87.59%;width:6.55%"><span>take 12</span></i><i class="" style="left:94.14%;width:5.86%"><span>take 13</span></i><b class="cut" style="left:7.24%"></b><b class="cut" style="left:16.90%"></b><b class="cut" style="left:22.59%"></b><b class="cut" style="left:32.07%"></b><b class="cut" style="left:38.62%"></b><b class="cut" style="left:48.10%"></b><b class="cut" style="left:54.31%"></b><b class="cut" style="left:62.41%"></b><b class="cut" style="left:71.90%"></b><b class="cut" style="left:78.10%"></b><b class="cut" style="left:87.59%"></b><b class="cut" style="left:94.14%"></b></div>
+            <div class="lane2 t-leg"><i class="w" style="left:0.52%;width:2.61%"><span>ESSE É O</span></i><i class="w hot" style="left:3.39%;width:2.61%"><span>ERRO QUE</span></i><i class="w" style="left:6.25%;width:2.56%"><span>TRAVA O</span></i><i class="w" style="left:9.07%;width:2.70%"><span>SEU PERFIL</span></i><i class="w" style="left:12.03%;width:2.56%"><span>E QUASE</span></i><i class="w hot" style="left:14.86%;width:2.56%"><span>NINGUÉM</span></i><i class="w" style="left:17.68%;width:2.56%"><span>PERCEBE</span></i><i class="w" style="left:20.50%;width:2.61%"><span>PRIMEIRO</span></i><i class="w" style="left:23.37%;width:2.70%"><span>VOCÊ GRAVA</span></i><i class="w hot" style="left:26.33%;width:2.52%"><span>DEPOIS</span></i><i class="w" style="left:29.10%;width:2.70%"><span>A IA CORTA</span></i><i class="w" style="left:32.06%;width:2.56%"><span>LEGENDA</span></i><i class="w" style="left:34.89%;width:2.56%"><span>E ANIMA</span></i><i class="w hot" style="left:37.71%;width:2.70%"><span>PRONTO PRA</span></i><i class="w" style="left:40.67%;width:2.52%"><span>POSTAR</span></i><i class="w" style="left:43.44%;width:2.70%"><span>SEM PERDER</span></i><i class="w" style="left:46.40%;width:2.61%"><span>HORAS NO</span></i><i class="w hot" style="left:49.27%;width:2.52%"><span>EDITOR</span></i><i class="w" style="left:52.05%;width:2.61%"><span>TODO DIA</span></i><i class="w" style="left:54.91%;width:2.43%"><span>É SÓ</span></i><i class="w" style="left:57.60%;width:2.47%"><span>PEDIR</span></i><i class="w hot" style="left:60.33%;width:2.66%"><span>E APROVAR</span></i><i class="w" style="left:63.24%;width:2.47%"><span>SALVA</span></i><i class="w" style="left:65.97%;width:2.66%"><span>NO ESTILO</span></i><i class="w" style="left:68.89%;width:2.56%"><span>E POSTA</span></i><i class="w hot" style="left:71.71%;width:2.56%"><span>SIMPLES</span></i><i class="w" style="left:74.53%;width:2.47%"><span>ASSIM</span></i><i class="w" style="left:77.26%;width:2.66%"><span>SEGUE PRA</span></i><i class="w" style="left:80.17%;width:2.56%"><span>PARTE 2</span></i><i class="w hot" style="left:82.99%;width:2.61%"><span>ESSE É O</span></i><i class="w" style="left:85.86%;width:2.61%"><span>ERRO QUE</span></i><i class="w" style="left:88.73%;width:2.56%"><span>TRAVA O</span></i><i class="w" style="left:91.55%;width:2.70%"><span>SEU PERFIL</span></i><i class="w hot" style="left:94.51%;width:2.56%"><span>E QUASE</span></i><i class="w" style="left:97.33%;width:2.32%"><span>NINGUÉM</span></i></div>
+            <div class="lane2 t-motion"><i class="" style="left:0.00%;width:5.17%"><span>gancho</span></i><i class="" style="left:24.14%;width:6.03%"><span>+10 mil</span></i><i class="" style="left:41.38%;width:4.31%"><span>passo 1</span></i><i class="" style="left:56.90%;width:4.31%"><span>passo 2</span></i><i class="" style="left:91.38%;width:8.62%"><span>chamada</span></i></div>
+            <div class="lane2 t-img"><i class="" style="left:32.76%;width:6.90%"><span>print do app</span></i><i class="" style="left:65.52%;width:6.03%"><span>foto</span></i></div>
+            <div class="lane2 t-fx"><i class="" style="left:10.34%;width:4.31%"><span>zoom</span></i><i class="" style="left:21.72%;width:2.07%"><span>punch</span></i><i class="" style="left:48.28%;width:4.31%"><span>zoom</span></i><i class="" style="left:74.14%;width:2.76%"><span>blur</span></i><i class="" style="left:81.03%;width:1.72%"><span>shake</span></i></div>
+            <div class="lane2 t-sfx"><em style="left:0.34%"><span>whoosh</span></em><em style="left:7.24%"><span>pop</span></em><em style="left:24.14%"><span>ding</span></em><em style="left:32.76%"><span>whoosh</span></em><em style="left:41.38%"><span>click</span></em><em style="left:56.90%"><span>click</span></em><em style="left:65.52%"><span>whoosh</span></em><em style="left:91.38%"><span>swoosh</span></em></div>
+            <div class="lane2 t-music"><i style="left:0;width:100%"><span>trilha · volume 12%</span></i></div>
+            <div class="playhead" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cutlist six">
+        <div><b data-n="23">23</b><span>cortes</span></div>
+        <div><b data-n="148">148</b><span>palavras legendadas</span></div>
+        <div><b data-n="5">5</b><span>motions</span></div>
+        <div><b data-n="2">2</b><span>imagens</span></div>
+        <div><b data-n="5">5</b><span>efeitos visuais</span></div>
+        <div><b data-n="8">8</b><span>sons</span></div>
+      </div>
+      <p class="note">Exemplo ilustrativo de um Reels de 58 segundos.</p>
+    </div>
+    <div class="also rv">
+      <div class="also-grid stagger">
+        <div><b>Legendas</b></div>
+        <div><b>Motions</b></div>
+        <div><b>Imagens</b></div>
+        <div><b>Efeitos visuais</b></div>
+        <div><b>Efeitos sonoros</b></div>
+      </div>
+    </div>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Quero parar de editar na mão <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <section id="instalacao">
+    <div class="head rv">
+      <span class="kicker">03 · Instalação</span>
+      <h2>Arraste um arquivo. <span class="mark">Pronto, instalou.</span></h2>
+      <p class="sub">Nada de baixar programa por programa ou digitar comando. Você solta o zip na conversa, escreve "instala" e a IA monta o estúdio inteiro sozinha.</p>
+    </div>
+
+    <div class="dd rv" aria-label="Animação: o arquivo estudio-reels-ia.zip é arrastado para a conversa do Claude Code, a pessoa escreve instala e a IA responde Instalado">
+      <div class="dd-finder">
+        <div class="dd-bar"><i></i><i></i><i></i><span>Downloads</span></div>
+        <div class="dd-file"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M6 2h20l10 10v32a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#2340E8"/><path d="M26 2v8a2 2 0 0 0 2 2h8" fill="#6B85FF"/><path d="M17 6h4v3h-4zM17 11h4v3h-4zM17 16h4v3h-4zM17 21h4v3h-4z" fill="#fff" opacity=".9"/><rect x="15" y="26" width="8" height="8" rx="2" fill="#fff"/></svg><span>estudio-reels-ia.zip</span></div>
+      </div>
+      <div class="dd-chat">
+        <div class="dd-bar"><i></i><i></i><i></i><span>Estudio · Claude Code</span></div>
+        <div class="dd-msgs">
+          <div class="dd-me"><span class="dd-chip"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M6 2h20l10 10v32a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#2340E8"/><path d="M26 2v8a2 2 0 0 0 2 2h8" fill="#6B85FF"/><path d="M17 6h4v3h-4zM17 11h4v3h-4zM17 16h4v3h-4zM17 21h4v3h-4z" fill="#fff" opacity=".9"/><rect x="15" y="26" width="8" height="8" rx="2" fill="#fff"/></svg>estudio-reels-ia.zip</span>instala</div>
+          <div class="dd-ai">
+            <p class="l1"><b>✓</b> Arquivos no lugar</p>
+            <p class="l2"><b>✓</b> Ferramentas instaladas</p>
+            <p class="l3"><b>✓</b> Vídeo de teste: DEU CERTO</p>
+            <p class="l4"><strong>Instalado ✓</strong> Próximo passo: <code>/perfil</code></p>
+          </div>
+        </div>
+        <div class="dd-input"><span class="dd-inchip"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M6 2h20l10 10v32a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#2340E8"/><path d="M26 2v8a2 2 0 0 0 2 2h8" fill="#6B85FF"/><path d="M17 6h4v3h-4zM17 11h4v3h-4zM17 16h4v3h-4zM17 21h4v3h-4z" fill="#fff" opacity=".9"/><rect x="15" y="26" width="8" height="8" rx="2" fill="#fff"/></svg>estudio-reels-ia.zip</span><span class="dd-type">instala</span><span class="dd-ph">Escreva ou solte um arquivo</span></div>
+      </div>
+      <div class="dd-ghost"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M6 2h20l10 10v32a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#2340E8"/><path d="M26 2v8a2 2 0 0 0 2 2h8" fill="#6B85FF"/><path d="M17 6h4v3h-4zM17 11h4v3h-4zM17 16h4v3h-4zM17 21h4v3h-4z" fill="#fff" opacity=".9"/><rect x="15" y="26" width="8" height="8" rx="2" fill="#fff"/></svg><span class="dd-cursor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#fff" stroke="#09090B" stroke-width="1.4" stroke-linejoin="round"/></svg></span></div>
+    </div>
+
+    <ol class="steps3 stagger">
+      <li><em>1</em><div><b>Abra uma pasta vazia</b><span>No Claude Code (ou no Codex do ChatGPT).</span></div></li>
+      <li><em>2</em><div><b>Solte o zip e escreva "instala"</b><span>A IA descompacta, instala e testa tudo sozinha.</span></div></li>
+      <li><em>3</em><div><b>Digite a senha do seu PC, se pedir</b><span>O Terminal já abre sozinho com tudo pronto. É só a senha e Enter.</span></div></li>
+    </ol>
+    <p class="after-steps rv">Em poucos minutos aparece um vídeo escrito <b>"DEU CERTO"</b>. A partir daí, editar é conversar.</p>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Quero o estúdio <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <section>
+    <div class="memory">
+      <div class="head rv">
+        <span class="kicker">04 · O que faz parecer seu</span>
+        <h2>Uma IA que <span class="mark">não esquece</span> o que você corrigiu.</h2>
+        <p class="sub">Toda IA edita igual quando não sabe nada sobre você. O estúdio guarda três coisas e lê as três antes de cada vídeo.</p>
+        <ul>
+          <li><em>01</em><div><b>Seu perfil</b><span>Quem você é, pra quem fala e o seu jeito de falar. Ele te faz algumas perguntas e salva seu perfil.</span></div></li>
+          <li><em>02</em><div><b>Sua referência</b><span>Um Reels que você admira, medido quadro a quadro: fonte, posição, cor, ritmo.</span></div></li>
+          <li><em>03</em><div><b>Suas regras</b><span>Cada ajuste que você aprova vira uma linha no arquivo de estilo e vale pra sempre.</span></div></li>
+        </ul>
+      </div>
+      <div class="file rv" aria-label="Exemplo do arquivo estilo.md">
+        <div class="file-h"><span>estilo.md</span><span>atualizado agora</span></div>
+<pre><span class="h">## Legenda</span>
+- Fonte: Montserrat Black, 76 px
+- Centro a 66% da altura
+- 3 palavras por vez, a falada em azul
+
+<span class="h">## Ritmo</span>
+- Corte seco, sem respiro maior que 0,3 s
+- Zoom de 15% a cada ideia nova
+
+<span class="h">## Regras aprendidas</span>
+<span class="c">- 03/10 Gancho em cima da cabeça, nunca</span>
+<span class="c">  dos lados. Porque: fica mais limpo.</span>
+<span class="new">+ 12/10 Legenda um pouco mais baixa no</span>
+<span class="new">  close. Porque: cobria a minha boca.</span></pre>
+      </div>
+    </div>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Quero vídeos com a minha cara <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <section>
+    <div class="head rv">
+      <span class="kicker">05 · Como você usa</span>
+      <h2>Três passos pra começar. Depois é só conversar.</h2>
+    </div>
+    <div class="cmds stagger">
+      <div class="cmd"><code>instalar</code><span>Monta o estúdio inteiro no seu computador e confere cada peça com ✓.</span></div>
+      <div class="cmd"><code>perfil</code><span>Uma entrevista curta, uma pergunta por vez, pra IA entender quem você é.</span></div>
+      <div class="cmd"><code>referencia</code><span>Mede o estilo de um Reels que você queria ter feito e transforma no seu.</span></div>
+    </div>
+    <div class="after-cmd rv"><p>Com os três feitos, é só mandar o vídeo e escrever o que você quer:</p><div class="says"><span>"edita esse"</span><span>"desce a legenda"</span><span>"salva no meu estilo"</span></div></div>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Começar agora <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <section id="aulas">
+    <div class="head rv">
+      <span class="kicker">06 · Área de membros</span>
+      <h2>Não é curso de edição. <span class="mark">É um passo a passo mastigado</span> pra sair do zero ao seu primeiro vídeo.</h2>
+      <p class="sub">Aulas curtas, em ordem, mostrando na tela o que fazer. Você não aprende a editar: aprende a mandar a IA editar por você.</p>
+    </div>
+    <div class="nf rv">
+      <div class="nf-top"><span class="nf-brand"><i></i>Estúdio Reels IA</span><span class="nf-prog">7 aulas + bônus · cerca de 1 hora</span></div>
+      <div class="nf-row-h"><b>Passo a passo</b><span>Do zero ao primeiro vídeo</span></div>
+      <div class="nf-row"><div class="nf-belt"><div class="nf-card"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" loading="lazy" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div></div></div>
+    </div>
+    <div class="nf-chips stagger"><span>Zero teoria de edição</span><span>Mac e Windows</span><span>Acesso imediato</span></div>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Quero o passo a passo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <section id="pra-quem">
+    <div class="head rv">
+      <span class="kicker">07 · Pra quem é</span>
+      <h2>Feito pra quem grava. <span class="mark">E não quer mais editar.</span></h2>
+    </div>
+    <div class="who4 stagger">
+      <div class="who-c"><span class="who-t">Profissional liberal</span><p class="who-hoje"><i>Hoje</i>Grava sobre o seu trabalho, mas o vídeo fica parado no celular porque não sobra tempo pra editar.</p><p class="who-agora"><i>Com o estúdio</i>Grava entre um atendimento e outro e a IA entrega pronto.</p></div>
+      <div class="who-c"><span class="who-t">Criador de conteúdo</span><p class="who-hoje"><i>Hoje</i>Precisa postar todo dia e passa mais tempo no editor do que gravando.</p><p class="who-agora"><i>Com o estúdio</i>Grava vários de uma vez e edita em lote, no mesmo estilo.</p></div>
+      <div class="who-c"><span class="who-t">Quem vende online</span><p class="who-hoje"><i>Hoje</i>Todo anúncio novo pede um criativo novo, e cada um é mais uma edição.</p><p class="who-agora"><i>Com o estúdio</i>Testa variações de gancho em minutos, só pedindo.</p></div>
+      <div class="who-c"><span class="who-t">Quem paga editor</span><p class="who-hoje"><i>Hoje</i>Manda o vídeo, paga por edição e espera dias pra receber de volta.</p><p class="who-agora"><i>Com o estúdio</i>Edita na hora, quantas vezes quiser, sem custo por vídeo.</p></div>
+    </div>
+    <p class="who-end rv">Nos quatro casos, <strong>quem edita passa a ser a IA</strong>. Você só grava e aprova.</p>
+  </section>
+
+  <section class="offer" id="oferta" aria-labelledby="oferta-t">
+    <div class="head rv offer-head">
+      <span class="kicker">Oferta</span>
+      <h2 id="oferta-t">Leve o estúdio pronto <span class="mark">mais o passo a passo</span> pra sair do zero ao seu primeiro vídeo.</h2>
+    </div>
+    <div class="deal rv">
+      <div class="deal-left">
+        <div class="cover" aria-hidden="true">
+          <div class="cover-art"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445 120" class="logo logo-cover" role="img" aria-label="Estúdio Reels com IA">      <g transform="translate(6,10)">     <rect x="20" y="10" width="48" height="82" rx="14" fill="#FFFFFF"/>     <path d="M37 30.5c0-2.6 2.8-4.2 5-2.9l14.4 8.6c2.2 1.3 2.2 4.5 0 5.8L42 50.6c-2.2 1.3-5-.3-5-2.9z" fill="#2340E8"/>     <rect x="30" y="62" width="28" height="6.5" rx="3.25" fill="#2340E8"/>     <rect x="35" y="73" width="18" height="6.5" rx="3.25" fill="#2340E8" opacity=".55"/>     <path d="M80 2c1 7.4 3.6 10 11 11-7.4 1-10 3.6-11 11-1-7.4-3.6-10-11-11 7.4-1 10-3.6 11-11z" fill="#FFFFFF"/>     </g>   <path transform="translate(118,58)" d="M3.128 0.0V-32.66H26.588V-26.128H11.132V-19.642H26.035999999999998V-13.11H11.132V-6.532H26.956V0.0ZM41.4 0.552Q37.214 0.552 34.569 -0.5289999999999999Q31.924 -1.6099999999999999 30.59 -3.4959999999999996Q29.256 -5.382 29.072 -7.774L37.076 -8.05Q37.352 -6.394 38.364 -5.566Q39.376 -4.7379999999999995 41.446 -4.7379999999999995Q43.056 -4.7379999999999995 43.907 -5.289999999999999Q44.757999999999996 -5.842 44.757999999999996 -6.8999999999999995Q44.757999999999996 -7.59 44.413 -8.05Q44.068 -8.51 43.07899999999999 -8.878Q42.089999999999996 -9.246 40.204 -9.568Q36.202 -10.212 33.902 -11.155Q31.602 -12.097999999999999 30.682000000000002 -13.57Q29.762 -15.042 29.762 -17.25Q29.762 -20.884 32.637 -23.092Q35.512 -25.3 41.308 -25.3Q45.218 -25.3 47.702 -24.195999999999998Q50.186 -23.092 51.474000000000004 -21.137Q52.762 -19.182 52.9 -16.605999999999998L45.034 -16.33Q44.988 -17.48 44.574 -18.308Q44.16 -19.136 43.331999999999994 -19.573Q42.504 -20.009999999999998 41.216 -20.009999999999998Q39.698 -20.009999999999998 38.801 -19.342999999999996Q37.903999999999996 -18.676 37.903999999999996 -17.526Q37.903999999999996 -16.744 38.272 -16.215Q38.64 -15.686 39.537 -15.364Q40.434 -15.042 41.998 -14.812Q45.95399999999999 -14.306 48.346 -13.317Q50.738 -12.328 51.819 -10.786999999999999Q52.9 -9.246 52.9 -7.038Q52.9 -3.358 49.840999999999994 -1.403Q46.782 0.552 41.4 0.552ZM66.562 0.0Q62.56 0.0 60.697 -1.863Q58.834 -3.726 58.834 -7.82V-30.544H66.74600000000001V-8.832Q66.74600000000001 -7.038 67.50500000000001 -6.371Q68.26400000000001 -5.704 69.828 -5.704H73.232V0.0ZM54.74 -19.044V-24.748H73.232V-19.044ZM83.904 0.552Q80.04 0.552 77.90100000000001 -1.909Q75.762 -4.37 75.762 -8.786V-24.748H83.674V-10.626Q83.674 -8.004 84.433 -6.808Q85.19200000000001 -5.612 86.848 -5.612Q88.688 -5.612 89.67699999999999 -6.923Q90.666 -8.234 90.666 -11.04V-24.748H98.578V0.0H91.44800000000001L91.218 -7.452L92.138 -7.314Q91.678 -3.358 89.608 -1.403Q87.538 0.552 83.904 0.552ZM83.44399999999999 -27.094 86.066 -34.178H93.564L89.42399999999999 -27.094ZM111.64200000000001 0.552Q108.51400000000001 0.552 106.28300000000002 -1.035Q104.052 -2.622 102.81 -5.52Q101.56800000000001 -8.418 101.56800000000001 -12.374Q101.56800000000001 -16.33 102.81 -19.228Q104.052 -22.126 106.32900000000001 -23.713Q108.60600000000001 -25.3 111.64200000000001 -25.3Q114.31 -25.3 116.196 -24.219Q118.08200000000001 -23.137999999999998 119.048 -21.206V-32.66H126.96000000000001V0.0H119.32400000000001L119.186 -3.588Q118.174 -1.6099999999999999 116.196 -0.5289999999999999Q114.218 0.552 111.64200000000001 0.552ZM114.402 -5.29Q115.92 -5.29 116.95500000000001 -6.072Q117.99000000000001 -6.854 118.519 -8.418Q119.048 -9.982 119.048 -12.374Q119.048 -14.766 118.519 -16.33Q117.99000000000001 -17.894 116.95500000000001 -18.676Q115.92 -19.458 114.402 -19.458Q112.24000000000001 -19.458 110.97500000000001 -17.549Q109.71000000000001 -15.64 109.71000000000001 -12.374Q109.71000000000001 -9.2 110.998 -7.244999999999999Q112.286 -5.29 114.402 -5.29ZM131.192 0.0V-24.748H139.10399999999998V0.0ZM131.054 -27.508V-33.396H139.24200000000002V-27.508ZM155.112 0.552Q151.202 0.552 148.281 -1.058Q145.36 -2.668 143.727 -5.566000000000001Q142.094 -8.464 142.094 -12.374Q142.094 -16.284 143.727 -19.182Q145.36 -22.08 148.281 -23.689999999999998Q151.202 -25.3 155.112 -25.3Q159.022 -25.3 161.92000000000002 -23.689999999999998Q164.818 -22.08 166.45100000000002 -19.182Q168.084 -16.284 168.084 -12.374Q168.084 -8.464 166.45100000000002 -5.566000000000001Q164.818 -2.668 161.92000000000002 -1.058Q159.022 0.552 155.112 0.552ZM155.112 -5.29Q157.412 -5.29 158.67700000000002 -7.130000000000001Q159.942 -8.97 159.942 -12.374Q159.942 -15.732 158.67700000000002 -17.595Q157.412 -19.458 155.112 -19.458Q152.766 -19.458 151.50099999999998 -17.595Q150.236 -15.732 150.236 -12.374Q150.236 -8.97 151.50099999999998 -7.130000000000001Q152.766 -5.29 155.112 -5.29ZM180.18200000000002 0.0V-32.66H195.132Q198.766 -32.66 201.457 -31.464Q204.148 -30.268 205.62 -28.083Q207.092 -25.898 207.092 -22.954Q207.092 -20.654 206.17200000000003 -18.906Q205.252 -17.158 203.619 -16.031Q201.986 -14.904 199.732 -14.536L199.594 -14.996Q202.952 -14.996 204.677 -13.57Q206.402 -12.144 206.586 -9.292L207.368 0.0H199.18L198.674 -7.958Q198.536 -9.798 197.59300000000002 -10.672Q196.65 -11.546 194.304 -11.546H188.186V0.0ZM188.186 -18.078H193.89Q196.328 -18.078 197.61599999999999 -19.136Q198.904 -20.194 198.904 -22.126Q198.904 -24.104 197.59300000000002 -25.116Q196.282 -26.128 193.798 -26.128H188.186ZM222.594 0.552Q218.73000000000002 0.552 215.832 -1.058Q212.934 -2.668 211.324 -5.566000000000001Q209.714 -8.464 209.714 -12.374Q209.714 -16.284 211.324 -19.159Q212.934 -22.034 215.809 -23.667Q218.684 -25.3 222.548 -25.3Q226.412 -25.3 229.24099999999999 -23.667Q232.07 -22.034 233.588 -18.997999999999998Q235.106 -15.962 235.106 -11.776V-10.304H217.90200000000002Q218.04000000000002 -7.728 219.351 -6.462999999999999Q220.662 -5.1979999999999995 222.732 -5.1979999999999995Q224.296 -5.1979999999999995 225.35399999999998 -5.818999999999999Q226.412 -6.4399999999999995 226.872 -7.866L234.784 -7.406Q233.772 -3.542 230.506 -1.4949999999999999Q227.24 0.552 222.594 0.552ZM217.90200000000002 -14.812H227.102Q227.01 -17.25 225.768 -18.469Q224.526 -19.688 222.548 -19.688Q220.662 -19.688 219.397 -18.4Q218.132 -17.112 217.90200000000002 -14.812ZM249.734 0.552Q245.87000000000003 0.552 242.97200000000004 -1.058Q240.074 -2.668 238.464 -5.566000000000001Q236.854 -8.464 236.854 -12.374Q236.854 -16.284 238.464 -19.159Q240.074 -22.034 242.949 -23.667Q245.824 -25.3 249.68800000000002 -25.3Q253.55200000000002 -25.3 256.38100000000003 -23.667Q259.21000000000004 -22.034 260.72800000000007 -18.997999999999998Q262.24600000000004 -15.962 262.24600000000004 -11.776V-10.304H245.04200000000003Q245.18 -7.728 246.491 -6.462999999999999Q247.80200000000002 -5.1979999999999995 249.872 -5.1979999999999995Q251.43600000000004 -5.1979999999999995 252.49400000000003 -5.818999999999999Q253.55200000000002 -6.4399999999999995 254.01200000000003 -7.866L261.92400000000004 -7.406Q260.91200000000003 -3.542 257.646 -1.4949999999999999Q254.38000000000002 0.552 249.734 0.552ZM245.04200000000003 -14.812H254.24200000000002Q254.15000000000003 -17.25 252.90800000000002 -18.469Q251.66600000000003 -19.688 249.68800000000002 -19.688Q247.80200000000002 -19.688 246.53700000000003 -18.4Q245.27200000000002 -17.112 245.04200000000003 -14.812ZM272.228 0.0Q268.916 0.0 267.076 -1.656Q265.236 -3.312 265.236 -7.038V-32.66H273.148V-7.912Q273.148 -6.716 273.70000000000005 -6.21Q274.252 -5.704 275.264 -5.704H276.782V0.0ZM290.03000000000003 0.552Q285.84400000000005 0.552 283.19900000000007 -0.5289999999999999Q280.55400000000003 -1.6099999999999999 279.22 -3.4959999999999996Q277.886 -5.382 277.70200000000006 -7.774L285.706 -8.05Q285.982 -6.394 286.994 -5.566Q288.00600000000003 -4.7379999999999995 290.076 -4.7379999999999995Q291.68600000000004 -4.7379999999999995 292.53700000000003 -5.289999999999999Q293.38800000000003 -5.842 293.38800000000003 -6.8999999999999995Q293.38800000000003 -7.59 293.043 -8.05Q292.69800000000004 -8.51 291.70900000000006 -8.878Q290.72 -9.246 288.83400000000006 -9.568Q284.83200000000005 -10.212 282.53200000000004 -11.155Q280.232 -12.097999999999999 279.312 -13.57Q278.39200000000005 -15.042 278.39200000000005 -17.25Q278.39200000000005 -20.884 281.26700000000005 -23.092Q284.14200000000005 -25.3 289.93800000000005 -25.3Q293.848 -25.3 296.332 -24.195999999999998Q298.81600000000003 -23.092 300.10400000000004 -21.137Q301.39200000000005 -19.182 301.53000000000003 -16.605999999999998L293.66400000000004 -16.33Q293.61800000000005 -17.48 293.20400000000006 -18.308Q292.79 -19.136 291.962 -19.573Q291.134 -20.009999999999998 289.84600000000006 -20.009999999999998Q288.32800000000003 -20.009999999999998 287.43100000000004 -19.342999999999996Q286.53400000000005 -18.676 286.53400000000005 -17.526Q286.53400000000005 -16.744 286.90200000000004 -16.215Q287.27000000000004 -15.686 288.16700000000003 -15.364Q289.064 -15.042 290.62800000000004 -14.812Q294.58400000000006 -14.306 296.97600000000006 -13.317Q299.36800000000005 -12.328 300.44900000000007 -10.786999999999999Q301.53000000000003 -9.246 301.53000000000003 -7.038Q301.53000000000003 -3.358 298.471 -1.403Q295.41200000000003 0.552 290.03000000000003 0.552Z" fill="#FFFFFF"/>   <path transform="translate(118,106)" d="M13.524 0.552Q10.028 0.552 7.406000000000001 -1.012Q4.784 -2.576 3.3579999999999997 -5.474Q1.932 -8.372 1.932 -12.236Q1.932 -16.1 3.3579999999999997 -18.975Q4.784 -21.849999999999998 7.406000000000001 -23.436999999999998Q10.028 -25.024 13.524 -25.024Q16.514 -25.024 18.837 -23.989Q21.16 -22.954 22.609 -20.976Q24.058 -18.998 24.472 -16.146L19.366 -15.87Q18.998 -18.262 17.434 -19.527Q15.87 -20.791999999999998 13.524 -20.791999999999998Q10.442 -20.791999999999998 8.717 -18.515Q6.992 -16.238 6.992 -12.236Q6.992 -8.234 8.717 -5.957Q10.442 -3.6799999999999997 13.524 -3.6799999999999997Q15.87 -3.6799999999999997 17.434 -4.991Q18.998 -6.302 19.366 -8.97L24.472 -8.693999999999999Q24.058 -5.888 22.609 -3.818Q21.16 -1.748 18.837 -0.598Q16.514 0.552 13.524 0.552ZM38.501999999999995 0.552Q35.006 0.552 32.384 -1.012Q29.761999999999997 -2.576 28.336 -5.474Q26.909999999999997 -8.372 26.909999999999997 -12.236Q26.909999999999997 -16.146 28.336 -18.997999999999998Q29.761999999999997 -21.849999999999998 32.384 -23.436999999999998Q35.006 -25.024 38.501999999999995 -25.024Q41.998 -25.024 44.62 -23.436999999999998Q47.242 -21.849999999999998 48.66799999999999 -18.997999999999998Q50.093999999999994 -16.146 50.093999999999994 -12.236Q50.093999999999994 -8.372 48.66799999999999 -5.474Q47.242 -2.576 44.62 -1.012Q41.998 0.552 38.501999999999995 0.552ZM38.501999999999995 -3.6799999999999997Q41.629999999999995 -3.6799999999999997 43.331999999999994 -5.957Q45.034 -8.234 45.034 -12.236Q45.034 -16.238 43.331999999999994 -18.515Q41.629999999999995 -20.791999999999998 38.501999999999995 -20.791999999999998Q35.42 -20.791999999999998 33.695 -18.515Q31.97 -16.238 31.97 -12.236Q31.97 -8.234 33.695 -5.957Q35.42 -3.6799999999999997 38.501999999999995 -3.6799999999999997ZM54.556 0.0V-24.472H59.017999999999994L59.15599999999999 -18.4L58.60399999999999 -18.584Q59.017999999999994 -20.608 60.053 -22.034Q61.087999999999994 -23.46 62.605999999999995 -24.242Q64.124 -25.024 65.91799999999999 -25.024Q69.04599999999999 -25.024 71.024 -23.253Q73.002 -21.482 73.508 -18.4H72.726Q73.13999999999999 -20.562 74.12899999999999 -22.011000000000003Q75.118 -23.46 76.68199999999999 -24.242Q78.246 -25.024 80.22399999999999 -25.024Q82.8 -25.024 84.61699999999999 -23.942999999999998Q86.434 -22.862 87.377 -20.792Q88.32 -18.722 88.32 -15.732V0.0H83.44399999999999V-14.536Q83.44399999999999 -17.71 82.29399999999998 -19.32Q81.14399999999999 -20.93 78.798 -20.93Q77.28 -20.93 76.13 -20.148Q74.97999999999999 -19.366 74.359 -17.894Q73.738 -16.422 73.738 -14.352V0.0H69.092V-14.352Q69.092 -17.48 68.05699999999999 -19.205Q67.02199999999999 -20.93 64.538 -20.93Q62.974 -20.93 61.846999999999994 -20.148Q60.71999999999999 -19.366 60.07599999999999 -17.871000000000002Q59.431999999999995 -16.376 59.431999999999995 -14.352V0.0Z" fill="#FFFFFF"/>   <path transform="translate(220.07399999999998,106)" d="M3.128 0.0V-32.66H11.132V0.0ZM13.707999999999998 0.0 25.483999999999998 -32.66H34.775999999999996L46.55199999999999 0.0H38.318L36.202 -6.164H24.058L21.896 0.0ZM26.22 -12.512H34.04L30.176 -24.012Z" fill="#FFFFFF"/> </svg><b>Do zero ao primeiro Reels editado com IA</b><span class="cover-sub">estúdio + passo a passo</span></div>
+          <span class="tag t1">7 aulas + bônus</span><span class="tag t2">5 assistentes</span><span class="tag t3">Mac e Windows</span>
+        </div>
+        <h3>Tudo o que você recebe</h3>
+        <ul class="get">
+          <li><b>Estúdio Reels IA completo</b><span>O editor pronto pra instalar no seu computador.</span></li>
+          <li class="li-aulas"><b>7 aulas curtas + bônus</b><span>Do setup ao primeiro vídeo postado, em ordem. Mac e Windows.</span><span class="notcourse">Não é um curso de edição. <strong>Quem edita é a IA.</strong></span></li>
+          <li><b>5 assistentes de IA configurados</b><span>Roteirista, analista de referência, editor, revisor e exportador.</span></li>
+          <li><b>3 atalhos prontos</b><span>/instalar, /perfil e /referencia. O resto é conversa.</span></li>
+          <li><b>Instala soltando o arquivo na conversa</b><span>Sem programa pra baixar, sem comando pra digitar.</span></li>
+          <li><b>Acesso vitalício</b><span>Assiste e reassiste quando quiser.</span></li>
+        </ul>
+      </div>
+      <div class="checkout">
+        <span class="live"><i></i>Acesso imediato</span>
+        <p class="ck-name">Estúdio Reels IA + Passo a Passo</p>
+        <div class="ck-box">
+          <p class="ck-de">De: <s>R$ 197</s> por</p>
+          <div class="ck-price"><span class="ck-x">12X</span><b>9,74</b></div>
+          <p class="ck-pay">Ou <b>R$ 97,00</b> à vista</p>
+        </div>
+        <a class="btn primary ck-btn" href="https://SEU-LINK-DE-CHECKOUT" target="_blank" rel="noopener">Quero meu acesso agora <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <div class="pay"><span>PIX</span><span>CARTÃO</span><span>BOLETO</span></div>
+        <ul class="trust">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Compra 100% segura</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Acesso liberado no e-mail logo após o pagamento</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8a4 4 0 1 0 0 8c3 0 7-8 10-8a4 4 0 1 1 0 8c-3 0-7-8-10-8z"/></svg>Pagamento único, sem mensalidade</li>
+        </ul>
+        <div class="seal"><div class="seal-badge"><b>7</b><span>dias</span></div><p><b>Garantia incondicional.</b> Se não for pra você, pede o reembolso em até 7 dias e recebe 100% do valor de volta.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="qa">
+    <div class="head rv">
+      <span class="kicker">08 · Dúvidas</span>
+      <h2>Perguntas frequentes</h2>
+    </div>
+    <div class="faq stagger">
+      <details><summary>As ferramentas são pagas?</summary><p>Só o Claude. Ele exige o plano pago (Pro), que você assina direto com a Anthropic. Remotion, Whisper e ffmpeg são gratuitos, e o estúdio instala tudo sozinho quando você solta o arquivo na conversa.</p></details>
+      <details><summary>Preciso saber programar?</summary><p>Não. Você conversa em português com a IA e ela mexe nos arquivos por você. Pra instalar, você só solta o arquivo na conversa e escreve "instala".</p></details>
+      <details><summary>Funciona no Mac e no Windows?</summary><p>Sim. O estúdio tem instalação pros dois sistemas, e as aulas mostram o passo a passo em cada um.</p></details>
+      <details><summary>Como eu recebo o acesso?</summary><p>Logo depois da confirmação do pagamento, chega no seu e-mail o acesso ao curso e ao estúdio pra baixar. No Pix e no cartão, a liberação é imediata.</p></details>
+      <details><summary>O vídeo vai sair com a cara de todo mundo?</summary><p>Não. O estilo nasce de uma referência que você escolhe e das correções que você aprova. Cada ajuste vira regra e vale pros próximos vídeos.</p></details>
+      <details><summary>Que tipo de vídeo dá pra editar?</summary><p>Vídeos em que você fala pra câmera, na vertical (Reels, TikTok, Shorts) ou na horizontal. O estúdio corta, legenda, coloca motions, imagens, efeitos e sons.</p></details>
+      <details><summary>Tem garantia?</summary><p>Tem. São 7 dias de garantia incondicional: se não for pra você, pede o reembolso e recebe 100% do valor de volta.</p></details>
+    </div>
+    <div class="cta-row rv"><a class="btn primary" href="#oferta">Garantir meu acesso <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 9,74 · Garantia de 7 dias</span></div>
+  </section>
+
+  <footer>
+    <span class="foot-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 445 120" class="logo" role="img" aria-label="Estúdio Reels com IA">      <g transform="translate(6,10)">     <rect x="20" y="10" width="48" height="82" rx="14" fill="#2340E8"/>     <path d="M37 30.5c0-2.6 2.8-4.2 5-2.9l14.4 8.6c2.2 1.3 2.2 4.5 0 5.8L42 50.6c-2.2 1.3-5-.3-5-2.9z" fill="#FFFFFF"/>     <rect x="30" y="62" width="28" height="6.5" rx="3.25" fill="#FFFFFF"/>     <rect x="35" y="73" width="18" height="6.5" rx="3.25" fill="#FFFFFF" opacity=".55"/>     <path d="M80 2c1 7.4 3.6 10 11 11-7.4 1-10 3.6-11 11-1-7.4-3.6-10-11-11 7.4-1 10-3.6 11-11z" fill="#FFFFFF"/>     </g>   <path transform="translate(118,58)" d="M3.128 0.0V-32.66H26.588V-26.128H11.132V-19.642H26.035999999999998V-13.11H11.132V-6.532H26.956V0.0ZM41.4 0.552Q37.214 0.552 34.569 -0.5289999999999999Q31.924 -1.6099999999999999 30.59 -3.4959999999999996Q29.256 -5.382 29.072 -7.774L37.076 -8.05Q37.352 -6.394 38.364 -5.566Q39.376 -4.7379999999999995 41.446 -4.7379999999999995Q43.056 -4.7379999999999995 43.907 -5.289999999999999Q44.757999999999996 -5.842 44.757999999999996 -6.8999999999999995Q44.757999999999996 -7.59 44.413 -8.05Q44.068 -8.51 43.07899999999999 -8.878Q42.089999999999996 -9.246 40.204 -9.568Q36.202 -10.212 33.902 -11.155Q31.602 -12.097999999999999 30.682000000000002 -13.57Q29.762 -15.042 29.762 -17.25Q29.762 -20.884 32.637 -23.092Q35.512 -25.3 41.308 -25.3Q45.218 -25.3 47.702 -24.195999999999998Q50.186 -23.092 51.474000000000004 -21.137Q52.762 -19.182 52.9 -16.605999999999998L45.034 -16.33Q44.988 -17.48 44.574 -18.308Q44.16 -19.136 43.331999999999994 -19.573Q42.504 -20.009999999999998 41.216 -20.009999999999998Q39.698 -20.009999999999998 38.801 -19.342999999999996Q37.903999999999996 -18.676 37.903999999999996 -17.526Q37.903999999999996 -16.744 38.272 -16.215Q38.64 -15.686 39.537 -15.364Q40.434 -15.042 41.998 -14.812Q45.95399999999999 -14.306 48.346 -13.317Q50.738 -12.328 51.819 -10.786999999999999Q52.9 -9.246 52.9 -7.038Q52.9 -3.358 49.840999999999994 -1.403Q46.782 0.552 41.4 0.552ZM66.562 0.0Q62.56 0.0 60.697 -1.863Q58.834 -3.726 58.834 -7.82V-30.544H66.74600000000001V-8.832Q66.74600000000001 -7.038 67.50500000000001 -6.371Q68.26400000000001 -5.704 69.828 -5.704H73.232V0.0ZM54.74 -19.044V-24.748H73.232V-19.044ZM83.904 0.552Q80.04 0.552 77.90100000000001 -1.909Q75.762 -4.37 75.762 -8.786V-24.748H83.674V-10.626Q83.674 -8.004 84.433 -6.808Q85.19200000000001 -5.612 86.848 -5.612Q88.688 -5.612 89.67699999999999 -6.923Q90.666 -8.234 90.666 -11.04V-24.748H98.578V0.0H91.44800000000001L91.218 -7.452L92.138 -7.314Q91.678 -3.358 89.608 -1.403Q87.538 0.552 83.904 0.552ZM83.44399999999999 -27.094 86.066 -34.178H93.564L89.42399999999999 -27.094ZM111.64200000000001 0.552Q108.51400000000001 0.552 106.28300000000002 -1.035Q104.052 -2.622 102.81 -5.52Q101.56800000000001 -8.418 101.56800000000001 -12.374Q101.56800000000001 -16.33 102.81 -19.228Q104.052 -22.126 106.32900000000001 -23.713Q108.60600000000001 -25.3 111.64200000000001 -25.3Q114.31 -25.3 116.196 -24.219Q118.08200000000001 -23.137999999999998 119.048 -21.206V-32.66H126.96000000000001V0.0H119.32400000000001L119.186 -3.588Q118.174 -1.6099999999999999 116.196 -0.5289999999999999Q114.218 0.552 111.64200000000001 0.552ZM114.402 -5.29Q115.92 -5.29 116.95500000000001 -6.072Q117.99000000000001 -6.854 118.519 -8.418Q119.048 -9.982 119.048 -12.374Q119.048 -14.766 118.519 -16.33Q117.99000000000001 -17.894 116.95500000000001 -18.676Q115.92 -19.458 114.402 -19.458Q112.24000000000001 -19.458 110.97500000000001 -17.549Q109.71000000000001 -15.64 109.71000000000001 -12.374Q109.71000000000001 -9.2 110.998 -7.244999999999999Q112.286 -5.29 114.402 -5.29ZM131.192 0.0V-24.748H139.10399999999998V0.0ZM131.054 -27.508V-33.396H139.24200000000002V-27.508ZM155.112 0.552Q151.202 0.552 148.281 -1.058Q145.36 -2.668 143.727 -5.566000000000001Q142.094 -8.464 142.094 -12.374Q142.094 -16.284 143.727 -19.182Q145.36 -22.08 148.281 -23.689999999999998Q151.202 -25.3 155.112 -25.3Q159.022 -25.3 161.92000000000002 -23.689999999999998Q164.818 -22.08 166.45100000000002 -19.182Q168.084 -16.284 168.084 -12.374Q168.084 -8.464 166.45100000000002 -5.566000000000001Q164.818 -2.668 161.92000000000002 -1.058Q159.022 0.552 155.112 0.552ZM155.112 -5.29Q157.412 -5.29 158.67700000000002 -7.130000000000001Q159.942 -8.97 159.942 -12.374Q159.942 -15.732 158.67700000000002 -17.595Q157.412 -19.458 155.112 -19.458Q152.766 -19.458 151.50099999999998 -17.595Q150.236 -15.732 150.236 -12.374Q150.236 -8.97 151.50099999999998 -7.130000000000001Q152.766 -5.29 155.112 -5.29ZM180.18200000000002 0.0V-32.66H195.132Q198.766 -32.66 201.457 -31.464Q204.148 -30.268 205.62 -28.083Q207.092 -25.898 207.092 -22.954Q207.092 -20.654 206.17200000000003 -18.906Q205.252 -17.158 203.619 -16.031Q201.986 -14.904 199.732 -14.536L199.594 -14.996Q202.952 -14.996 204.677 -13.57Q206.402 -12.144 206.586 -9.292L207.368 0.0H199.18L198.674 -7.958Q198.536 -9.798 197.59300000000002 -10.672Q196.65 -11.546 194.304 -11.546H188.186V0.0ZM188.186 -18.078H193.89Q196.328 -18.078 197.61599999999999 -19.136Q198.904 -20.194 198.904 -22.126Q198.904 -24.104 197.59300000000002 -25.116Q196.282 -26.128 193.798 -26.128H188.186ZM222.594 0.552Q218.73000000000002 0.552 215.832 -1.058Q212.934 -2.668 211.324 -5.566000000000001Q209.714 -8.464 209.714 -12.374Q209.714 -16.284 211.324 -19.159Q212.934 -22.034 215.809 -23.667Q218.684 -25.3 222.548 -25.3Q226.412 -25.3 229.24099999999999 -23.667Q232.07 -22.034 233.588 -18.997999999999998Q235.106 -15.962 235.106 -11.776V-10.304H217.90200000000002Q218.04000000000002 -7.728 219.351 -6.462999999999999Q220.662 -5.1979999999999995 222.732 -5.1979999999999995Q224.296 -5.1979999999999995 225.35399999999998 -5.818999999999999Q226.412 -6.4399999999999995 226.872 -7.866L234.784 -7.406Q233.772 -3.542 230.506 -1.4949999999999999Q227.24 0.552 222.594 0.552ZM217.90200000000002 -14.812H227.102Q227.01 -17.25 225.768 -18.469Q224.526 -19.688 222.548 -19.688Q220.662 -19.688 219.397 -18.4Q218.132 -17.112 217.90200000000002 -14.812ZM249.734 0.552Q245.87000000000003 0.552 242.97200000000004 -1.058Q240.074 -2.668 238.464 -5.566000000000001Q236.854 -8.464 236.854 -12.374Q236.854 -16.284 238.464 -19.159Q240.074 -22.034 242.949 -23.667Q245.824 -25.3 249.68800000000002 -25.3Q253.55200000000002 -25.3 256.38100000000003 -23.667Q259.21000000000004 -22.034 260.72800000000007 -18.997999999999998Q262.24600000000004 -15.962 262.24600000000004 -11.776V-10.304H245.04200000000003Q245.18 -7.728 246.491 -6.462999999999999Q247.80200000000002 -5.1979999999999995 249.872 -5.1979999999999995Q251.43600000000004 -5.1979999999999995 252.49400000000003 -5.818999999999999Q253.55200000000002 -6.4399999999999995 254.01200000000003 -7.866L261.92400000000004 -7.406Q260.91200000000003 -3.542 257.646 -1.4949999999999999Q254.38000000000002 0.552 249.734 0.552ZM245.04200000000003 -14.812H254.24200000000002Q254.15000000000003 -17.25 252.90800000000002 -18.469Q251.66600000000003 -19.688 249.68800000000002 -19.688Q247.80200000000002 -19.688 246.53700000000003 -18.4Q245.27200000000002 -17.112 245.04200000000003 -14.812ZM272.228 0.0Q268.916 0.0 267.076 -1.656Q265.236 -3.312 265.236 -7.038V-32.66H273.148V-7.912Q273.148 -6.716 273.70000000000005 -6.21Q274.252 -5.704 275.264 -5.704H276.782V0.0ZM290.03000000000003 0.552Q285.84400000000005 0.552 283.19900000000007 -0.5289999999999999Q280.55400000000003 -1.6099999999999999 279.22 -3.4959999999999996Q277.886 -5.382 277.70200000000006 -7.774L285.706 -8.05Q285.982 -6.394 286.994 -5.566Q288.00600000000003 -4.7379999999999995 290.076 -4.7379999999999995Q291.68600000000004 -4.7379999999999995 292.53700000000003 -5.289999999999999Q293.38800000000003 -5.842 293.38800000000003 -6.8999999999999995Q293.38800000000003 -7.59 293.043 -8.05Q292.69800000000004 -8.51 291.70900000000006 -8.878Q290.72 -9.246 288.83400000000006 -9.568Q284.83200000000005 -10.212 282.53200000000004 -11.155Q280.232 -12.097999999999999 279.312 -13.57Q278.39200000000005 -15.042 278.39200000000005 -17.25Q278.39200000000005 -20.884 281.26700000000005 -23.092Q284.14200000000005 -25.3 289.93800000000005 -25.3Q293.848 -25.3 296.332 -24.195999999999998Q298.81600000000003 -23.092 300.10400000000004 -21.137Q301.39200000000005 -19.182 301.53000000000003 -16.605999999999998L293.66400000000004 -16.33Q293.61800000000005 -17.48 293.20400000000006 -18.308Q292.79 -19.136 291.962 -19.573Q291.134 -20.009999999999998 289.84600000000006 -20.009999999999998Q288.32800000000003 -20.009999999999998 287.43100000000004 -19.342999999999996Q286.53400000000005 -18.676 286.53400000000005 -17.526Q286.53400000000005 -16.744 286.90200000000004 -16.215Q287.27000000000004 -15.686 288.16700000000003 -15.364Q289.064 -15.042 290.62800000000004 -14.812Q294.58400000000006 -14.306 296.97600000000006 -13.317Q299.36800000000005 -12.328 300.44900000000007 -10.786999999999999Q301.53000000000003 -9.246 301.53000000000003 -7.038Q301.53000000000003 -3.358 298.471 -1.403Q295.41200000000003 0.552 290.03000000000003 0.552Z" fill="#FFFFFF"/>   <path transform="translate(118,106)" d="M13.524 0.552Q10.028 0.552 7.406000000000001 -1.012Q4.784 -2.576 3.3579999999999997 -5.474Q1.932 -8.372 1.932 -12.236Q1.932 -16.1 3.3579999999999997 -18.975Q4.784 -21.849999999999998 7.406000000000001 -23.436999999999998Q10.028 -25.024 13.524 -25.024Q16.514 -25.024 18.837 -23.989Q21.16 -22.954 22.609 -20.976Q24.058 -18.998 24.472 -16.146L19.366 -15.87Q18.998 -18.262 17.434 -19.527Q15.87 -20.791999999999998 13.524 -20.791999999999998Q10.442 -20.791999999999998 8.717 -18.515Q6.992 -16.238 6.992 -12.236Q6.992 -8.234 8.717 -5.957Q10.442 -3.6799999999999997 13.524 -3.6799999999999997Q15.87 -3.6799999999999997 17.434 -4.991Q18.998 -6.302 19.366 -8.97L24.472 -8.693999999999999Q24.058 -5.888 22.609 -3.818Q21.16 -1.748 18.837 -0.598Q16.514 0.552 13.524 0.552ZM38.501999999999995 0.552Q35.006 0.552 32.384 -1.012Q29.761999999999997 -2.576 28.336 -5.474Q26.909999999999997 -8.372 26.909999999999997 -12.236Q26.909999999999997 -16.146 28.336 -18.997999999999998Q29.761999999999997 -21.849999999999998 32.384 -23.436999999999998Q35.006 -25.024 38.501999999999995 -25.024Q41.998 -25.024 44.62 -23.436999999999998Q47.242 -21.849999999999998 48.66799999999999 -18.997999999999998Q50.093999999999994 -16.146 50.093999999999994 -12.236Q50.093999999999994 -8.372 48.66799999999999 -5.474Q47.242 -2.576 44.62 -1.012Q41.998 0.552 38.501999999999995 0.552ZM38.501999999999995 -3.6799999999999997Q41.629999999999995 -3.6799999999999997 43.331999999999994 -5.957Q45.034 -8.234 45.034 -12.236Q45.034 -16.238 43.331999999999994 -18.515Q41.629999999999995 -20.791999999999998 38.501999999999995 -20.791999999999998Q35.42 -20.791999999999998 33.695 -18.515Q31.97 -16.238 31.97 -12.236Q31.97 -8.234 33.695 -5.957Q35.42 -3.6799999999999997 38.501999999999995 -3.6799999999999997ZM54.556 0.0V-24.472H59.017999999999994L59.15599999999999 -18.4L58.60399999999999 -18.584Q59.017999999999994 -20.608 60.053 -22.034Q61.087999999999994 -23.46 62.605999999999995 -24.242Q64.124 -25.024 65.91799999999999 -25.024Q69.04599999999999 -25.024 71.024 -23.253Q73.002 -21.482 73.508 -18.4H72.726Q73.13999999999999 -20.562 74.12899999999999 -22.011000000000003Q75.118 -23.46 76.68199999999999 -24.242Q78.246 -25.024 80.22399999999999 -25.024Q82.8 -25.024 84.61699999999999 -23.942999999999998Q86.434 -22.862 87.377 -20.792Q88.32 -18.722 88.32 -15.732V0.0H83.44399999999999V-14.536Q83.44399999999999 -17.71 82.29399999999998 -19.32Q81.14399999999999 -20.93 78.798 -20.93Q77.28 -20.93 76.13 -20.148Q74.97999999999999 -19.366 74.359 -17.894Q73.738 -16.422 73.738 -14.352V0.0H69.092V-14.352Q69.092 -17.48 68.05699999999999 -19.205Q67.02199999999999 -20.93 64.538 -20.93Q62.974 -20.93 61.846999999999994 -20.148Q60.71999999999999 -19.366 60.07599999999999 -17.871000000000002Q59.431999999999995 -16.376 59.431999999999995 -14.352V0.0Z" fill="#FFFFFF"/>   <path transform="translate(220.07399999999998,106)" d="M3.128 0.0V-32.66H11.132V0.0ZM13.707999999999998 0.0 25.483999999999998 -32.66H34.775999999999996L46.55199999999999 0.0H38.318L36.202 -6.164H24.058L21.896 0.0ZM26.22 -12.512H34.04L30.176 -24.012Z" fill="#2340E8"/> </svg></span>
+    <p>Estúdio Reels IA · criado por Rodrigo (@rodigocarvalho). Claude, Remotion, Whisper e ffmpeg pertencem aos seus criadores; este produto não tem vínculo oficial com eles.</p>
+  </footer>
+</div>
+
+<div class="sticky" id="sticky" aria-hidden="true"><p>Estúdio Reels IA<br><span>12x de R$ 9,74 · acesso imediato</span></p><a class="btn primary" href="#oferta" tabindex="-1">Garantir</a></div>
+
+<script>
+  // linha do tempo: o cursor percorre a largura real das faixas
+  // som: toque no vídeo liga/desliga o áudio (um por vez)
+  var vids = [].slice.call(document.querySelectorAll("video"));
+  document.querySelectorAll(".snd").forEach(function (btn) {
+    var v = btn.parentNode.querySelector("video");
+    function alterna() {
+      var ligar = v.muted;
+      vids.forEach(function (o) { o.muted = true; var bt = o.parentNode.querySelector(".snd"); if (bt) { bt.classList.remove("on"); bt.setAttribute("aria-label", "Ativar som"); } });
+      if (ligar) { v.muted = false; v.currentTime = 0; v.play(); btn.classList.add("on"); btn.setAttribute("aria-label", "Desativar som"); }
+    }
+    btn.addEventListener("click", alterna); v.addEventListener("click", alterna);
+  });
+
+  // efeitos de rolagem
+  var reduz = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var sbar = document.getElementById("sbar"), app = document.getElementById("app");
+  function rolar() {
+    var h = document.documentElement.scrollHeight - innerHeight, y = scrollY;
+    sbar.style.transform = "scaleX(" + (h > 0 ? y / h : 0) + ")";
+    if (!reduz && app && innerWidth >= 900) app.style.transform = "translateY(" + Math.min(y, 600) * -0.08 + "px) rotateX(" + Math.max(0, 8 - y / 40) + "deg)";
+  }
+  addEventListener("scroll", function () { requestAnimationFrame(rolar); }, { passive: true }); rolar();
+
+  if ("IntersectionObserver" in window && !reduz) {
+    document.documentElement.classList.add("anim");
+    document.querySelectorAll("#tools em").forEach(function (m) { m.textContent = "instalando…"; });
+    document.querySelectorAll(".stagger").forEach(function (g) { [].forEach.call(g.children, function (c, i) { c.style.transitionDelay = (i * 0.09) + "s"; }); });
+    function contar(el) {
+      var alvo = +el.dataset.n, t0 = null;
+      function passo(t) { if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 900); el.textContent = Math.round(alvo * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(passo); }
+      requestAnimationFrame(passo);
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in"); io.unobserve(e.target);
+        if (e.target.id === "cutbox") e.target.querySelectorAll("[data-n]").forEach(contar);
+        if (e.target.id === "tools") [].filter.call(e.target.children, function (t) { return t.querySelector(".st"); }).forEach(function (t, i) { setTimeout(function () { t.classList.add("ok"); t.querySelector("em").textContent = "instalado sozinho"; }, 700 + i * 550); });
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
+    document.querySelectorAll(".rv, .stagger, .tools").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".rv, .stagger").forEach(function (el) { el.classList.add("in"); });
+  }
+
+  // barra fixa no celular: aparece depois do topo, some na oferta
+  var sticky = document.getElementById("sticky"), hero = document.querySelector(".hero"), oferta = document.getElementById("oferta");
+  if ("IntersectionObserver" in window) {
+    var passou = false, naOferta = false;
+    function sync() { var on = passou && !naOferta; sticky.classList.toggle("show", on); sticky.setAttribute("aria-hidden", !on); sticky.querySelector("a").tabIndex = on ? 0 : -1; }
+    new IntersectionObserver(function (e) { passou = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); }).observe(hero);
+    new IntersectionObserver(function (e) { naOferta = e[0].isIntersecting; sync(); }, { threshold: 0.1 }).observe(oferta);
+  }
+</script>
+
+<script>
+/* autoplay garantido: blob em vez de data:, play ao aparecer e no primeiro toque */
+(function () {
+  var vids = [].slice.call(document.querySelectorAll("video"));
+  function tocar(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  vids.forEach(function (v) {
+    v.muted = true; v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", ""); v.autoplay = true; v.loop = true;
+    var s = v.getAttribute("src") || "";
+    if (s.indexOf("data:") === 0) {
+      fetch(s).then(function (r) { return r.blob(); }).then(function (b) { v.src = URL.createObjectURL(b); v.load(); tocar(v); }).catch(function () { tocar(v); });
+    } else { tocar(v); }
+  });
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && e.target.paused) tocar(e.target); }); }, { threshold: 0.2 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+  function primeiroToque() { vids.forEach(function (v) { if (v.paused) tocar(v); }); }
+  ["touchstart", "click", "scroll"].forEach(function (ev) { window.addEventListener(ev, primeiroToque, { once: true, passive: true }); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) primeiroToque(); });
+})();
+</script>
+</body>
+</html>
