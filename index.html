@@ -570,7 +570,7 @@
     </div>
 
     <div class="hero-vid rv" id="app">
-      <div class="phone-frame"><video src="m/estilo-c.mp4" poster="m/poster-c.jpg" muted loop playsinline preload="auto" aria-label="Reels editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="phone-frame"><video src="m/estilo-c.mp4" poster="m/poster-c.jpg" autoplay muted loop playsinline preload="auto" aria-label="Reels editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
       <span class="vid-badge"><i></i>Editado 100% pela IA</span>
     </div>
   </header>
@@ -581,9 +581,9 @@
       <h2>O estilo que você quiser.</h2>
     </div>
     <div class="reels stagger">
-      <div class="clip v"><video src="m/estilo-a.mp4" poster="m/poster-a.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo A"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
-      <div class="clip v"><video src="m/estilo-b.mp4" poster="m/poster-b.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo B"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
-      <div class="clip h"><video src="m/estilo-d.mp4" poster="m/poster-d.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo horizontal editado no estilo D"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip v"><video src="m/estilo-a.mp4" poster="m/poster-a.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo A"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip v"><video src="m/estilo-b.mp4" poster="m/poster-b.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo B"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip h"><video src="m/estilo-d.mp4" poster="m/poster-d.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo horizontal editado no estilo D"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
     </div>
     <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero editar assim <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
@@ -873,30 +873,24 @@
 </script>
 
 <script>
-/* vídeos tocam quando metade deles aparece na tela e pausam quando saem */
+/* autoplay garantido: blob em vez de data:, play ao aparecer e no primeiro toque */
 (function () {
   var vids = [].slice.call(document.querySelectorAll("video"));
   function tocar(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
   vids.forEach(function (v) {
-    v.removeAttribute("autoplay"); v.autoplay = false;
-    v.muted = true; v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", ""); v.loop = true;
-    if (v.getAttribute("preload") === "metadata") v.setAttribute("preload", "auto");
-    v.pause();
+    v.muted = true; v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", ""); v.autoplay = true; v.loop = true;
+    var s = v.getAttribute("src") || "";
+    if (s.indexOf("data:") === 0) {
+      fetch(s).then(function (r) { return r.blob(); }).then(function (b) { v.src = URL.createObjectURL(b); v.load(); tocar(v); }).catch(function () { tocar(v); });
+    } else { tocar(v); }
   });
-  var visivel = new Map();
   if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        var v = e.target, ok = e.isIntersecting && e.intersectionRatio >= 0.5;
-        visivel.set(v, ok);
-        if (ok) tocar(v); else if (!v.paused) v.pause();
-      });
-    }, { threshold: [0, 0.5, 1] });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && e.target.paused) tocar(e.target); }); }, { threshold: 0.2 });
     vids.forEach(function (v) { io.observe(v); });
-  } else { vids.forEach(tocar); }
-  function retomar() { vids.forEach(function (v) { if (visivel.get(v) && v.paused) tocar(v); }); }
-  ["touchstart", "click"].forEach(function (ev) { window.addEventListener(ev, retomar, { once: true, passive: true }); });
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) retomar(); });
+  }
+  function primeiroToque() { vids.forEach(function (v) { if (v.paused) tocar(v); }); }
+  ["touchstart", "click", "scroll"].forEach(function (ev) { window.addEventListener(ev, primeiroToque, { once: true, passive: true }); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) primeiroToque(); });
 })();
 </script>
 </body>
