@@ -514,8 +514,11 @@
   .nf-row-h { display: flex; justify-content: space-between; align-items: baseline; padding: 20px 22px 12px; }
   .nf-row-h b { font-size: 19px; letter-spacing: -.01em; }
   .nf-row-h span { font-size: 13px; color: var(--dim); }
-  .nf-row { overflow: hidden; padding: 16px 0 20px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-  .nf-belt { display: flex; width: max-content; animation: nfloop 38s linear infinite; }
+  .nf-row { overflow: hidden; padding: 16px 0 20px; position: relative; }
+  .nf-row::before, .nf-row::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40px; z-index: 3; pointer-events: none; }
+  .nf-row::before { left: 0; background: linear-gradient(90deg, #0E0E12, transparent); }
+  .nf-row::after { right: 0; background: linear-gradient(-90deg, #0E0E12, transparent); }
+  .nf-belt { display: flex; width: max-content; will-change: transform; -webkit-transform: translateZ(0); animation: nfloop 38s linear infinite; }
   .nf-row:hover .nf-belt { animation-play-state: paused; }
   @keyframes nfloop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .nf-card { flex: 0 0 180px; margin-right: 14px; position: relative; border-radius: 10px; overflow: hidden; background: var(--surface); transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
@@ -563,11 +566,11 @@
         <a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero o estúdio <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn ghost" href="#como">Ver como funciona</a>
       </div>
-      <div class="facts"><span>Instala soltando 1 arquivo</span><span>Sem saber programar</span><span>Mac e Windows</span><span>Acesso vitalício</span></div>
+      <div class="facts"><span>Instala soltando 1 arquivo</span><span>Sem saber programar</span><span>Suporte por 7 dias</span><span>Acesso vitalício</span></div>
     </div>
 
     <div class="hero-vid rv" id="app">
-      <div class="phone-frame"><video src="m/estilo-c.mp4" poster="m/poster-c.jpg" autoplay muted loop playsinline preload="auto" aria-label="Reels editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="phone-frame"><video src="m/estilo-c.mp4" poster="m/poster-c.jpg" muted loop playsinline preload="auto" aria-label="Reels editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
       <span class="vid-badge"><i></i>Editado 100% pela IA</span>
     </div>
   </header>
@@ -578,9 +581,9 @@
       <h2>O estilo que você quiser.</h2>
     </div>
     <div class="reels stagger">
-      <div class="clip v"><video src="m/estilo-a.mp4" poster="m/poster-a.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo A"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
-      <div class="clip v"><video src="m/estilo-b.mp4" poster="m/poster-b.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo B"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
-      <div class="clip h"><video src="m/estilo-d.mp4" poster="m/poster-d.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo horizontal editado no estilo D"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip v"><video src="m/estilo-a.mp4" poster="m/poster-a.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo A"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip v"><video src="m/estilo-b.mp4" poster="m/poster-b.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo editado no estilo B"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
+      <div class="clip h"><video src="m/estilo-d.mp4" poster="m/poster-d.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo horizontal editado no estilo D"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div>
     </div>
     <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero editar assim <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
@@ -725,9 +728,9 @@
     <div class="nf rv">
       <div class="nf-top"><span class="nf-brand"><i></i>Estúdio Reels IA</span><span class="nf-prog">7 aulas + bônus · cerca de 1 hora</span></div>
       <div class="nf-row-h"><b>Passo a passo</b><span>Do zero ao primeiro vídeo</span></div>
-      <div class="nf-row"><div class="nf-belt"><div class="nf-card"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" loading="lazy" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" loading="lazy" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div></div></div>
+      <div class="nf-row"><div class="nf-belt"><div class="nf-card"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div></div></div>
     </div>
-    <div class="nf-chips stagger"><span>Zero teoria de edição</span><span>Mac e Windows</span><span>Acesso imediato</span></div>
+    <div class="nf-chips stagger"><span>Zero teoria de edição</span><span>Mac e Windows</span><span>Acesso imediato</span><span>Comunidade de alunos</span><span>Suporte por 7 dias</span></div>
     <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero o passo a passo <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
 
@@ -764,6 +767,8 @@
           <li><b>3 atalhos prontos</b><span>/instalar, /perfil e /referencia. O resto é conversa.</span></li>
           <li><b>Instala soltando o arquivo na conversa</b><span>Sem programa pra baixar, sem comando pra digitar.</span></li>
           <li><b>Acesso vitalício</b><span>Assiste e reassiste quando quiser.</span></li>
+          <li><b>Comunidade de alunos</b><span>Troque ideias, tire dúvidas e veja o que os outros alunos estão editando.</span></li>
+          <li><b>Suporte por 7 dias após a compra</b><span>Travou na instalação ou na primeira edição? A gente te ajuda.</span></li>
         </ul>
       </div>
       <div class="checkout">
@@ -868,24 +873,30 @@
 </script>
 
 <script>
-/* autoplay garantido: blob em vez de data:, play ao aparecer e no primeiro toque */
+/* vídeos tocam quando metade deles aparece na tela e pausam quando saem */
 (function () {
   var vids = [].slice.call(document.querySelectorAll("video"));
   function tocar(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
   vids.forEach(function (v) {
-    v.muted = true; v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", ""); v.autoplay = true; v.loop = true;
-    var s = v.getAttribute("src") || "";
-    if (s.indexOf("data:") === 0) {
-      fetch(s).then(function (r) { return r.blob(); }).then(function (b) { v.src = URL.createObjectURL(b); v.load(); tocar(v); }).catch(function () { tocar(v); });
-    } else { tocar(v); }
+    v.removeAttribute("autoplay"); v.autoplay = false;
+    v.muted = true; v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", ""); v.loop = true;
+    if (v.getAttribute("preload") === "metadata") v.setAttribute("preload", "auto");
+    v.pause();
   });
+  var visivel = new Map();
   if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && e.target.paused) tocar(e.target); }); }, { threshold: 0.2 });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var v = e.target, ok = e.isIntersecting && e.intersectionRatio >= 0.5;
+        visivel.set(v, ok);
+        if (ok) tocar(v); else if (!v.paused) v.pause();
+      });
+    }, { threshold: [0, 0.5, 1] });
     vids.forEach(function (v) { io.observe(v); });
-  }
-  function primeiroToque() { vids.forEach(function (v) { if (v.paused) tocar(v); }); }
-  ["touchstart", "click", "scroll"].forEach(function (ev) { window.addEventListener(ev, primeiroToque, { once: true, passive: true }); });
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) primeiroToque(); });
+  } else { vids.forEach(tocar); }
+  function retomar() { vids.forEach(function (v) { if (visivel.get(v) && v.paused) tocar(v); }); }
+  ["touchstart", "click"].forEach(function (ev) { window.addEventListener(ev, retomar, { once: true, passive: true }); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) retomar(); });
 })();
 </script>
 </body>
