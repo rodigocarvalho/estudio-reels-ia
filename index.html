@@ -557,6 +557,14 @@
   .who-i svg { width: 22px; height: 22px; fill: none; stroke: #9DB0FF; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   .sticky .logo-sticky { height: 30px; width: auto; display: block; }
+
+  .who-vids { display: grid; grid-template-columns: repeat(2, minmax(0, 260px)); gap: 16px; justify-content: center; }
+  .who-vids figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .who-vids figcaption { display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--muted); text-align: center; }
+  .who-vids figcaption b { color: var(--fg); font-size: 15px; }
+  @media (max-width: 640px) { .who-vids { gap: 10px; } .who-vids figcaption { font-size: 12px; } .who-vids figcaption b { font-size: 13px; } }
+
+  .who-vids-t { margin: 12px 0 0; text-align: center; font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; letter-spacing: -.02em; }
 </style>
 </head>
 <body>
@@ -756,7 +764,11 @@
       <div class="who-c"><span class="who-i" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/><path d="M12 12 20 4M17 4h3v3"/></svg></span><span class="who-t">Gestores de marketing</span><p class="who-hoje"><i>Hoje</i>Todo anúncio novo pede um criativo novo, e cada um é mais uma edição.</p><p class="who-agora"><i>Com o estúdio</i>Testa variações de criativos em minutos, só pedindo.</p></div>
       <div class="who-c"><span class="who-i" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="11" rx="2"/><path d="m10 6.5 4 2-4 2z"/><path d="M3 18h7M13 18h8M3 21h4M10 21h11M11.5 16v7"/></svg></span><span class="who-t">Quem paga editor</span><p class="who-hoje"><i>Hoje</i>Manda o vídeo, paga por edição e espera dias pra receber de volta.</p><p class="who-agora"><i>Com o estúdio</i>Edita na hora, quantas vezes quiser, sem custo por vídeo.</p></div>
     </div>
-    <p class="who-end rv">Nos quatro casos, <strong>quem edita passa a ser a IA</strong>. Você só grava e aprova.</p>
+    <p class="who-vids-t rv">Serve pra qualquer área ou nicho.</p>
+    <div class="who-vids stagger">
+      <figure><div class="clip v"><video src="m/corretor.mp4" poster="m/poster-corretor.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Reels de corretor de imóveis editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div></figure>
+      <figure><div class="clip v"><video src="m/nutri.mp4" poster="m/poster-nutri.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Reels para nutricionista e dentista editado pelo estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div></figure>
+    </div>
   </section>
 
   <section class="offer" id="oferta" aria-labelledby="oferta-t">
