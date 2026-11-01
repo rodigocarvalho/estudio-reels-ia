@@ -203,6 +203,17 @@
   .duo figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
   .duo figcaption { font-size: 14px; color: var(--muted); }
   @media (max-width: 420px) { .duo { gap: 8px; } .duo figcaption { font-size: 13px; } }
+
+  /* carrossel das aulas controlado por script (funciona também no celular e arrasta com o dedo) */
+  .nfjs .nf-row { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .nfjs .nf-row::-webkit-scrollbar { display: none; }
+  .nfjs .nf-belt { animation: none; }
+  /* timeline no celular: rótulos fixos enquanto a linha acompanha o cursor */
+  .tl-labels { position: sticky; left: 0; z-index: 4; background: var(--surface); }
+  /* vídeos de alunos e motion centralizados */
+  .duo { margin-inline: auto; }
+  #alunos .head, #motion .head { margin-inline: auto; text-align: center; align-items: center; }
+  #alunos .nf-chips, #motion .nf-chips, #alunos .cta-row, #motion .cta-row { justify-content: center; }
   .clip.v video { aspect-ratio: 9 / 16; }
   .clip.h { grid-column: 1 / -1; } .clip.h video { aspect-ratio: 16 / 9; }
   .clip .snd { right: 10px; top: 10px; }
@@ -412,7 +423,7 @@
     .vid-badge { left: 50%; transform: translateX(-50%); bottom: -16px; white-space: nowrap; }
     .hero-vid { margin-bottom: 16px; }
   }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .cap span, .head-line, .ck-btn, .live i, .playhead, .launch b::before { animation: none; } .app { transform: none !important; } .sticky { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .ck-btn, .live i, .launch b::before { animation: none; } .app { transform: none !important; } .sticky { transition: none; } }
 
   h1 .ln { display: block; }
   .hero-k .by { color: var(--muted); }
@@ -886,6 +897,47 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 97, curren
     btn.addEventListener("click", alterna); v.addEventListener("click", alterna);
   });
 
+
+
+  // carrossel: rolagem automática por script; pausa ao tocar/passar o mouse e retoma depois
+  (function () {
+    var row = document.querySelector(".nf-row"), belt = row && row.querySelector(".nf-belt");
+    if (!row || !belt) return;
+    document.documentElement.classList.add("nfjs");
+    var pos = 0, last = 0, hold = false, timer = null, vel = innerWidth < 640 ? 34 : 28;
+    function pausa(ms) { hold = true; clearTimeout(timer); timer = setTimeout(function () { pos = row.scrollLeft; hold = false; }, ms); }
+    ["touchstart", "pointerdown", "wheel"].forEach(function (ev) { row.addEventListener(ev, function () { pausa(2500); }, { passive: true }); });
+    row.addEventListener("mouseenter", function () { hold = true; clearTimeout(timer); });
+    row.addEventListener("mouseleave", function () { pos = row.scrollLeft; hold = false; });
+    function passo(t) {
+      var dt = last ? Math.min(t - last, 64) / 1000 : 0; last = t;
+      var half = belt.scrollWidth / 2;
+      if (!hold && half > 0) {
+        pos += vel * dt; if (pos >= half) pos -= half;
+        row.scrollLeft = pos;
+      } else if (half > 0) {
+        if (row.scrollLeft >= half) { row.scrollLeft -= half; } else if (row.scrollLeft <= 0) { row.scrollLeft += half; }
+      }
+      requestAnimationFrame(passo);
+    }
+    requestAnimationFrame(passo);
+  })();
+
+  // timeline: no celular o scroll acompanha o cursor, pra animação ficar sempre à vista
+  (function () {
+    var sc = document.querySelector(".tl-scroll"), ph = sc && sc.querySelector(".playhead");
+    if (!sc || !ph) return;
+    var hold = false, timer = null;
+    ["touchstart", "pointerdown", "wheel"].forEach(function (ev) { sc.addEventListener(ev, function () { hold = true; clearTimeout(timer); timer = setTimeout(function () { hold = false; }, 3000); }, { passive: true }); });
+    function seguir() {
+      if (!hold && sc.scrollWidth > sc.clientWidth + 4) {
+        var x = ph.getBoundingClientRect().left - sc.getBoundingClientRect().left + sc.scrollLeft;
+        sc.scrollLeft = Math.max(0, x - sc.clientWidth * 0.55);
+      }
+      requestAnimationFrame(seguir);
+    }
+    requestAnimationFrame(seguir);
+  })();
 
   // efeitos de rolagem
   var reduz = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
