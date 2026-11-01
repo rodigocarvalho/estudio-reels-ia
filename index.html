@@ -199,6 +199,10 @@
   .reels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .clip { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #000; min-width: 0; }
   .clip video { display: block; width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+  .duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 620px; }
+  .duo figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .duo figcaption { font-size: 14px; color: var(--muted); }
+  @media (max-width: 420px) { .duo { gap: 8px; } .duo figcaption { font-size: 13px; } }
   .clip.v video { aspect-ratio: 9 / 16; }
   .clip.h { grid-column: 1 / -1; } .clip.h video { aspect-ratio: 16 / 9; }
   .clip .snd { right: 10px; top: 10px; }
@@ -739,23 +743,37 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 97, curren
     <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero vídeos com a minha cara <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
 
-  <section>
+  <section id="alunos">
     <div class="head rv">
-      <span class="kicker">05 · Como você usa</span>
-      <h2>Três passos pra começar. Depois é só conversar.</h2>
+      <span class="kicker">05 · Alunos</span>
+      <h2>Quem já usa <span class="mark">posta mais, do jeito que quer.</span></h2>
+      <p class="sub">Gente que nunca tinha aberto o Claude Code e hoje edita os próprios Reels por conversa, sem timeline e sem editor.</p>
     </div>
-    <div class="cmds stagger">
-      <div class="cmd"><code>instalar</code><span>Monta o estúdio inteiro no seu computador e confere cada peça com ✓.</span></div>
-      <div class="cmd"><code>perfil</code><span>Uma entrevista curta, uma pergunta por vez, pra IA entender quem você é.</span></div>
-      <div class="cmd"><code>referencia</code><span>Mede o estilo de um Reels que você queria ter feito e transforma no seu.</span></div>
+    <div class="duo stagger">
+      <figure><div class="clip v"><video src="m/aluno-resultado.mp4" poster="m/poster-aluno-resultado.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Depoimento de aluno com resultado real"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div><figcaption>Aluno: mais visualizações e 60+ vídeos publicados</figcaption></figure>
+      <figure><div class="clip v"><video src="m/aluno-advogada.mp4" poster="m/poster-aluno-advogada.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo de advogada editado com o estúdio"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div><figcaption>Advocacia: legenda palavra por palavra e gráficos animados</figcaption></figure>
     </div>
-    <div class="after-cmd rv"><p>Com os três feitos, é só mandar o vídeo e escrever o que você quer:</p><div class="says"><span>"edita esse"</span><span>"desce a legenda"</span><span>"salva no meu estilo"</span></div></div>
-    <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Começar agora <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="nf-chips stagger"><span>Primeira vez no Claude Code</span><span>Vídeo editado do jeito deles</span><span>Mais volume, sem perder qualidade</span></div>
+    <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero esse resultado <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
+  <section id="motion">
+    <div class="head rv">
+      <span class="kicker">06 · Motion graphics</span>
+      <h2>Não quer mostrar o rosto? <span class="mark">Então não mostre.</span></h2>
+      <p class="sub">Além de editar o que você grava, o estúdio cria vídeos inteiros só com motion graphics: texto animado, gráficos, ícones e telas em movimento. Perfeito pra canal dark ou pra quem prefere ficar fora das câmeras.</p>
+    </div>
+    <div class="duo stagger">
+      <figure><div class="clip v"><video src="m/motion-eletricista.mp4" poster="m/poster-motion-eletricista.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics para eletricista"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div><figcaption>Motion graphics: explica um serviço sem ninguém na tela</figcaption></figure>
+      <figure><div class="clip v"><video src="m/motion-estilo-h.mp4" poster="m/poster-motion-estilo-h.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics, estilo H"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div><figcaption>Estilo H: sem gravar, sem editar, sem colocar o rosto</figcaption></figure>
+    </div>
+    <div class="nf-chips stagger"><span>Canais dark</span><span>Sem aparecer</span><span>Do roteiro ao vídeo pronto</span><span>No seu estilo</span></div>
+    <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero criar sem aparecer <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
 
   <section id="aulas">
     <div class="head rv">
-      <span class="kicker">06 · Área de membros</span>
+      <span class="kicker">07 · Área de membros</span>
       <h2>Não é curso de edição. <span class="mark">É um passo a passo mastigado</span> pra sair do zero ao seu primeiro vídeo.</h2>
       <p class="sub">Aulas curtas, em ordem, mostrando na tela o que fazer. Você não aprende a editar: aprende a mandar a IA editar por você.</p>
     </div>
@@ -770,7 +788,7 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 97, curren
 
   <section id="pra-quem">
     <div class="head rv">
-      <span class="kicker">07 · Pra quem é</span>
+      <span class="kicker">08 · Pra quem é</span>
       <h2>Feito pra quem grava. <span class="mark">E não quer mais editar.</span></h2>
     </div>
     <div class="who4 stagger">
@@ -831,7 +849,7 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 97, curren
 
   <section class="qa">
     <div class="head rv">
-      <span class="kicker">08 · Dúvidas</span>
+      <span class="kicker">09 · Dúvidas</span>
       <h2>Perguntas frequentes</h2>
     </div>
     <div class="faq stagger">
