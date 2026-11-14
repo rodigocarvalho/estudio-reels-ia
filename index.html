@@ -207,7 +207,7 @@
   /* carrossel das aulas controlado por script (funciona também no celular e arrasta com o dedo) */
   .nfjs .nf-row { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
   .nfjs .nf-row::-webkit-scrollbar { display: none; }
-  .nfjs .nf-belt { animation: none; }
+  .nfjs .nf-belt { animation: none; will-change: auto; -webkit-transform: none; transform: none; }
   /* timeline no celular: rótulos fixos enquanto a linha acompanha o cursor */
   .tl-labels { position: sticky; left: 0; z-index: 4; background: var(--surface); }
   /* vídeos de alunos e motion centralizados */
@@ -803,7 +803,7 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 97, curren
       <h2>Não é curso de edição. <span class="mark">É um passo a passo mastigado</span> pra sair do zero ao seu primeiro vídeo.</h2>
       <p class="sub">Aulas curtas, em ordem, mostrando na tela o que fazer. Você não aprende a editar: aprende a mandar a IA editar por você.</p>
     </div>
-    <div class="nf rv">
+    <div class="nf">
       <div class="nf-top"><span class="nf-brand"><i></i>Estúdio Reels IA</span><span class="nf-prog">7 aulas + bônus · cerca de 1 hora</span></div>
       <div class="nf-row-h"><b>Passo a passo</b><span>Do zero ao primeiro vídeo</span></div>
       <div class="nf-row"><div class="nf-belt"><div class="nf-card"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-1.jpg" alt="Aula 01: Boas-vindas e tour pelo estúdio" width="400" height="600"><div class="nf-info"><b>Aula 01</b><span>Boas-vindas e tour pelo estúdio</span><i>4 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-2.jpg" alt="Aula 02: Instalação com uma mensagem" width="400" height="600"><div class="nf-info"><b>Aula 02</b><span>Instalação com uma mensagem</span><i>6 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-3.jpg" alt="Aula 03: Ensinando a IA quem você é" width="400" height="600"><div class="nf-info"><b>Aula 03</b><span>Ensinando a IA quem você é</span><i>5 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-4.jpg" alt="Aula 04: Criando o seu estilo" width="400" height="600"><div class="nf-info"><b>Aula 04</b><span>Criando o seu estilo</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-5.jpg" alt="Aula 05: Roteiro e gravação" width="400" height="600"><div class="nf-info"><b>Aula 05</b><span>Roteiro e gravação</span><i>8 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-6.jpg" alt="Aula 06: Sua primeira edição completa" width="400" height="600"><div class="nf-info"><b>Aula 06</b><span>Sua primeira edição completa</span><i>18 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-7.jpg" alt="Aula 07: Ajustar, salvar e postar" width="400" height="600"><div class="nf-info"><b>Aula 07</b><span>Ajustar, salvar e postar</span><i>7 min</i></div></div><div class="nf-card" aria-hidden="true"><img src="m/aula-bonus.jpg" alt="Bônus: Bônus: os erros mais comuns" width="400" height="600"><div class="nf-info"><b>Bônus</b><span>Bônus: os erros mais comuns</span><i>5 min</i></div></div></div></div>
@@ -919,12 +919,17 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 97, curren
     var row = document.querySelector(".nf-row"), belt = row && row.querySelector(".nf-belt");
     if (!row || !belt) return;
     document.documentElement.classList.add("nfjs");
-    var pos = 0, last = 0, hold = false, timer = null, vel = innerWidth < 640 ? 34 : 28;
+    var pos = 0, last = 0, hold = false, timer = null, parou = false, vel = innerWidth < 640 ? 34 : 28;
+    // plano B: se o navegador não mover o scroll por script, volta pra animação em CSS
+    setTimeout(function () {
+      if (!hold && row.scrollLeft < 1) { parou = true; document.documentElement.classList.remove("nfjs"); }
+    }, 2000);
     function pausa(ms) { hold = true; clearTimeout(timer); timer = setTimeout(function () { pos = row.scrollLeft; hold = false; }, ms); }
     ["touchstart", "pointerdown", "wheel"].forEach(function (ev) { row.addEventListener(ev, function () { pausa(2500); }, { passive: true }); });
     row.addEventListener("mouseenter", function () { hold = true; clearTimeout(timer); });
     row.addEventListener("mouseleave", function () { pos = row.scrollLeft; hold = false; });
     function passo(t) {
+      if (parou) return;
       var dt = last ? Math.min(t - last, 64) / 1000 : 0; last = t;
       var half = belt.scrollWidth / 2;
       if (!hold && half > 0) {
