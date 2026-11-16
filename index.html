@@ -585,7 +585,52 @@
   .proof img { display: block; width: 100%; height: auto; }
     @media (min-width: 900px) { .proof { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; gap: 20px; } }
 
+  /* motion graphics: título em destaque, vídeos horizontais e como usar */
+  .mg-title { display: block; align-self: center; text-align: center; font-size: clamp(36px, 10vw, 104px); font-weight: 800; letter-spacing: -0.05em; line-height: .95; background: linear-gradient(95deg, #7C93FF 0%, #2B4BFF 45%, #8B5CF6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
+  #motion .head { max-width: 860px; }
+  .duo-h { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; max-width: 980px; margin-inline: auto; width: 100%; }
+  .duo-h figure { margin: 0; min-width: 0; }
+  .duo-h .clip video { aspect-ratio: 16 / 9; }
+  @media (min-width: 700px) { .duo-h { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .how-t { text-align: center; font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; letter-spacing: -.02em; margin: 6px 0 -8px; }
+  .steps4 { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .steps4 li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .steps4 em { font-style: normal; width: 40px; height: 40px; border-radius: 12px; background: var(--blue); color: #fff; font-weight: 800; font-size: 18px; display: grid; place-items: center; }
+  .steps4 b { display: block; font-size: 17px; }
+  .steps4 span { color: var(--muted); font-size: 15px; }
+  @media (min-width: 600px) and (max-width: 899px) { .steps4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .steps4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } .steps4 li { grid-template-columns: minmax(0, 1fr); } }
   .who-vids-t { margin: 12px 0 0; text-align: center; font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; letter-spacing: -.02em; }
+
+  /* não gostou do resultado? (garantia) */
+  .risk { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: center; justify-items: center; text-align: center; border: 1px solid rgba(34,197,94,.35); border-radius: 28px; padding: 36px 22px; background: radial-gradient(90% 120% at 0% 0%, rgba(34,197,94,.14), transparent 60%), var(--surface); }
+  .risk-badge { width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(from 0deg, #16A34A, #22C55E, #16A34A); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #04210f; box-shadow: inset 0 0 0 7px rgba(255,255,255,.28), 0 30px 70px -28px rgba(34,197,94,.7); flex: none; }
+  .risk-badge b { font-size: 64px; line-height: .9; letter-spacing: -0.05em; font-weight: 800; }
+  .risk-badge span { font: 800 14px var(--f); text-transform: uppercase; letter-spacing: .08em; }
+  .risk-txt { display: flex; flex-direction: column; gap: 16px; align-items: center; min-width: 0; }
+  .risk-txt h2 { max-width: 18ch; }
+  .risk-txt .sub { max-width: 52ch; }
+  .risk-txt .sub b { color: var(--fg); font-weight: 600; }
+  .risk-pts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; text-align: left; font-size: 16px; color: var(--muted); }
+  .risk-pts li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; }
+  .risk-pts li::before { content: "✓"; width: 22px; height: 22px; border-radius: 50%; background: rgba(34,197,94,.15); color: var(--ok); font: 800 12px var(--f); display: grid; place-items: center; margin-top: 2px; }
+  .risk-pts b { color: var(--fg); font-weight: 600; }
+  @media (min-width: 900px) {
+    .risk { grid-template-columns: 190px minmax(0, 1fr); gap: 56px; padding: 56px 56px; justify-items: stretch; text-align: left; }
+    .risk-badge { width: 190px; height: 190px; }
+    .risk-badge b { font-size: 82px; }
+    .risk-txt { align-items: flex-start; }
+  }
+
+  /* não gostou? ele ajusta */
+  .adj { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: center; }
+  .adj-chat { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 50px 120px -40px rgba(35,64,232,.55); min-width: 0; }
+  .adj-chat .chat { padding: 18px 16px 20px; gap: 10px; font-size: 15px; }
+  .adj-chat .b { max-width: 88%; }
+  .adj-chat .b.ai b { color: var(--ok); font-weight: 600; }
+  .adj-chat .b.ai code { font: 13px var(--mono); color: var(--ok); }
+  .adj-tag { align-self: center; font: 500 11px var(--mono); color: var(--dim); text-transform: uppercase; letter-spacing: .06em; padding: 2px 0; }
+  @media (min-width: 900px) { .adj { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; } .adj-chat .chat { padding: 24px 22px 26px; } }
 </style>
 <!-- Meta Pixel -->
 <script>
@@ -645,7 +690,8 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 57, curren
 
   <section id="motion">
     <div class="head rv">
-      <span class="kicker">02 · Motion graphics</span>
+      <span class="kicker">02 · Novidade</span>
+      <span class="mg-title">Motion Graphics</span>
       <h2>Não quer mostrar o rosto? <span class="mark">Então não mostre.</span></h2>
       <p class="sub">Além de editar o que você grava, o estúdio cria vídeos inteiros só com motion graphics: texto animado, gráficos, ícones e telas em movimento. Perfeito pra canal dark ou pra quem prefere ficar fora das câmeras.</p>
     </div>
@@ -653,6 +699,17 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 57, curren
       <figure><div class="clip v"><video src="m/motion-eletricista.mp4" poster="m/poster-motion-eletricista.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics para eletricista"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div></figure>
       <figure><div class="clip v"><video src="m/motion-estilo-h.mp4" poster="m/poster-motion-estilo-h.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics, estilo H"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div></figure>
     </div>
+    <div class="duo-h stagger">
+      <figure><div class="clip h"><video src="m/motion-maps.mp4" poster="m/poster-motion-maps.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics: conceito de app de mapas"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div></figure>
+      <figure><div class="clip h"><video src="m/motion-spotify.mp4" poster="m/poster-motion-spotify.jpg" muted loop playsinline preload="metadata" aria-label="Vídeo em motion graphics: conceito de app de música"></video><button class="snd" type="button" aria-label="Ativar som">som</button></div></figure>
+    </div>
+    <h3 class="how-t rv">Como usar: da ideia ao vídeo em 4 passos</h3>
+    <ol class="steps4 stagger">
+      <li><em>1</em><div><b>Você conta a ideia</b><span>Uma frase com o conceito do vídeo.</span></div></li>
+      <li><em>2</em><div><b>A IA escreve e monta</b><span>Cria o roteiro, os textos e as telas do vídeo.</span></div></li>
+      <li><em>3</em><div><b>Anima no ritmo da fala</b><span>Cada texto, número e tela entra na palavra certa, com efeitos sonoros.</span></div></li>
+      <li><em>4</em><div><b>Você pede ajuste e renderiza</b><span>Ajusta em português, na conversa. Sai em 4K, vertical ou horizontal.</span></div></li>
+    </ol>
     <div class="nf-chips stagger"><span>Canais dark</span><span>Sem aparecer</span><span>Do roteiro ao vídeo pronto</span><span>No seu estilo</span></div>
     <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero criar sem aparecer <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </section>
@@ -797,9 +854,30 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 57, curren
 
 
 
+  <section id="ajuste">
+    <div class="adj">
+      <div class="head rv">
+        <span class="kicker">07 · Ajustes</span>
+        <h2>Não gostou do resultado? <span class="mark">Ele ajusta.</span></h2>
+        <p class="sub">Nada de reabrir o editor. Se algo não ficou como você queria, você diz em português o que mudar, a IA refaz e mostra de novo.</p>
+        <div class="nf-chips"><span>Você pede em português</span><span>Ele refaz e mostra de novo</span><span>O ajuste vira regra</span></div>
+      </div>
+      <div class="adj-chat rv" aria-label="Exemplo de conversa pedindo um ajuste no vídeo">
+        <div class="app-bar"><i></i><i></i><i></i><span>Estúdio · Claude Code</span></div>
+        <div class="chat">
+          <div class="b me">Gostei, mas a legenda tá cobrindo a minha boca no close.</div>
+          <div class="b ai">Baixei a legenda nos trechos de close. Olha como ficou.</div>
+          <div class="b me">Agora sim. Salva isso.</div>
+          <div class="b ai"><b>✓</b> Salvei no <code>estilo.md</code>: legenda mais baixa no close. Vale pra todos os próximos vídeos.</div>
+        </div>
+      </div>
+    </div>
+    <div class="cta-row rv"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero um editor que ajusta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+  </section>
+
   <section id="aulas">
     <div class="head rv">
-      <span class="kicker">07 · Área de membros</span>
+      <span class="kicker">08 · Área de membros</span>
       <h2>Não é curso de edição. <span class="mark">É um passo a passo mastigado</span> pra sair do zero ao seu primeiro vídeo.</h2>
       <p class="sub">Aulas curtas, em ordem, mostrando na tela o que fazer. Você não aprende a editar: aprende a mandar a IA editar por você.</p>
     </div>
@@ -814,7 +892,7 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 57, curren
 
   <section id="pra-quem">
     <div class="head rv">
-      <span class="kicker">08 · Pra quem é</span>
+      <span class="kicker">09 · Pra quem é</span>
       <h2>Feito pra quem quer <span class="mark">ganhar tempo e não perder profissionalismo.</span></h2>
     </div>
     <div class="who4 stagger">
@@ -873,9 +951,26 @@ fbq('track', 'ViewContent', {content_name: 'Estudio Reels IA', value: 57, curren
     </div>
   </section>
 
+  <section class="risk-sec" id="garantia" aria-labelledby="garantia-t">
+    <div class="risk rv">
+      <div class="risk-badge" aria-hidden="true"><b>7</b><span>dias</span></div>
+      <div class="risk-txt">
+        <span class="kicker">Garantia</span>
+        <h2 id="garantia-t">Não gostou do resultado? <span class="mark">Seu dinheiro volta.</span></h2>
+        <p class="sub">Instala, faz o primeiro vídeo e vê com os próprios olhos. Se o estúdio não for pra você, <b>você pede o reembolso em até 7 dias e recebe 100% do valor de volta.</b></p>
+        <ul class="risk-pts">
+          <li><span><b>Garantia incondicional.</b> Não precisa justificar o motivo.</span></li>
+          <li><span><b>7 dias</b> pra instalar, testar e assistir às aulas.</span></li>
+          <li><span><b>100% de volta.</b> Sem pegadinha e sem desconto.</span></li>
+        </ul>
+        <div class="cta-row"><a class="btn primary" href="https://pay.kiwify.com.br/0IUnyZB">Quero testar sem risco <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><span>12x de R$ 5,90 · Garantia de 7 dias</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="qa">
     <div class="head rv">
-      <span class="kicker">09 · Dúvidas</span>
+      <span class="kicker">10 · Dúvidas</span>
       <h2>Perguntas frequentes</h2>
     </div>
     <div class="faq stagger">
